@@ -1,0 +1,113 @@
+{
+  "adults": {
+    "1": {
+      "adult_name": "Daniela Antonella Eduarda Moura",
+      "adult_gender": "Feminino",
+      "adult_birthdate": "07/08/2005",
+      "adult_cpf": "595.741.396-89",
+      "adult_rg": "27.136.103-7",
+      "adult_address": [
+        "Rua Dom Nery 141",
+        "Centro",
+        "Pouso Alegre",
+        "MG"
+      ],
+      "adult_contacts": [
+        "(35) 3970-9609"
+      ],
+      "adult_activities": [
+        "Corte e costura"
+      ]
+    },
+    "2": {
+      "adult_name": "F\u00e1tima Juliana Drumond",
+      "adult_gender": "Feminino",
+      "adult_birthdate": "02/08/2005",
+      "adult_cpf": "727.110.066-03",
+      "adult_rg": "1.608.222-7",
+      "adult_address": [
+        "Avenida Doutor Jo\u00e3o Beraldo 264",
+        "Centro",
+        "Pouso Alegre",
+        "MG"
+      ],
+      "adult_contacts": [
+        "(35) 3512-9162"
+      ],
+      "adult_activities": [
+        "Corte e costura",
+        "Xadrez"
+      ]
+    },
+    "3": {
+      "adult_name": "Ricardo Thomas Bryan Gomes",
+      "adult_gender": "Masculino",
+      "adult_birthdate": "11/01/2005",
+      "adult_cpf": "782.553.866-88",
+      "adult_rg": "22.811.723-9",
+      "adult_address": [
+        "Rua Adolfo Olinto 281",
+        "Centro",
+        "Pouso Alegre",
+        "MG"
+      ],
+      "adult_contacts": [
+        "(35) 2969-8310"
+      ],
+      "adult_activities": [
+        "Ingl\u00eas"
+      ]
+    }
+  },
+  "children": {
+    "1": {
+      "child_name": "Anderson Jos\u00e9 Almada",
+      "child_gender": "Feminino",
+      "child_birthdate": "3/20/2014",
+      "child_cpf": "051.197.286-50",
+      "child_rg": "48.101.265-5",
+      "child_activities": [
+        "Futsal masculino"
+      ],
+      "parent_name": "Diogo Jo\u00e3o Melo",
+      "parent_gender": "Masculino",
+      "parent_birthdate": "15/01/1977",
+      "parent_cpf": "805.330.956-97",
+      "parent_rg": "11.837.085-6",
+      "parent_address": [
+        "Avenida Doutor Jo\u00e3o Beraldo 264",
+        "Centro",
+        "Pouso Alegre",
+        "MG"
+      ],
+      "parent_contacts": [
+        "(35) 99564-9752"
+      ]
+    },
+    "2": {
+      "child_name": "Luzia Sophia Esther da Silva",
+      "child_gender": "Feminino",
+      "child_birthdate": "10/8/2014",
+      "child_cpf": "551.206.866-05",
+      "child_rg": "15.337.568-1",
+      "child_activities": [
+        "Futsal feminino"
+      ],
+      "parent_name": "Marlene Aurora Isabelle Arag\u00e3o",
+      "parent_gender": "Feminino",
+      "parent_birthdate": "09/04/1979",
+      "parent_cpf": "148.845.696-87",
+      "parent_rg": "30.118.711-3",
+      "parent_address": [
+        "Rua Adolfo Olinto 281",
+        "Centro",
+        "Pouso Alegre",
+        "MG"
+      ],
+      "parent_contacts": [
+        "telefone fixo: (35) 3990-1058",
+        "celular: (35) 98638-8406"
+      ]
+    }
+  }
+}
