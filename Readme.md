@@ -16,7 +16,7 @@ Atualmente, os registros são armazenados em documentos físicos, e a ideia dest
 
 ## Instalação
 
-Siga as etapas abaixo para instalar e executar o Prossan-TK:
+Siga as etapas abaixo para instalar:
 
 1. Primeiramente, certifique-se de ter Python 3 instalado em seu sistema.
 
