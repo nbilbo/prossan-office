@@ -29,7 +29,7 @@ class AdultsForm(BaseForm):
         self.save_img = image_tk(constants.ICONS_DIR / 'save.png', (32, 32))
         self.adults_img = image_tk(constants.ICONS_DIR / 'adults.png', (52, 52))
 
-        self.title('Formulário')
+        self.title('Escritório do Prossan - Formulário para adultos')
         self.header_title.config(text='Formulário para Adultos')
         self.header_title.config(image=self.adults_img, compound=tk.TOP)
 

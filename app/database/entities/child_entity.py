@@ -21,3 +21,6 @@ class ChildEntity:
     parent_rg: str
     parent_address: Tuple[str, str, str, str]
     parent_contacts: List[str]
+
+    def __post_init__(self) -> None:
+        self.child_first_name = self.child_name.split(' ')[0]

@@ -15,3 +15,6 @@ class AdultEntity:
     adult_activities: List[str]
     adult_address: Tuple[str, str, str, str]
     adult_contacts: List[str]
+
+    def __post_init__(self) -> None:
+        self.adult_first_name = self.adult_name.split(' ')[0]

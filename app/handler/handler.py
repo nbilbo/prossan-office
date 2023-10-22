@@ -1,9 +1,11 @@
 import traceback
 from functools import partial
 
+from app import constants
 from app.database.repositories import AdultRepository, ChildRepository
 from app.ui import Application
-from app.ui.forms import AdultsForm, ChildrenForm
+from app.ui.forms import AdultsForm, ChildrenForm, PdfForm
+from app.utils.pdf import generate_adult_entity_pdf, generate_child_entity_pdf
 
 
 class Handler:
@@ -56,10 +58,12 @@ class Handler:
         create_button = self.application.children_page.create_button
         details_button = self.application.children_page.details_button
         delete_button = self.application.children_page.delete_button
+        pdf_button = self.application.children_page.pdf_button
 
         create_button.config(command=self.handle_open_create_children_form)
         details_button.config(command=self.handle_open_details_children_form)
         delete_button.config(command=self.handle_open_delete_children_dialog)
+        pdf_button.config(command=self.handle_children_pdf)
 
     def bind_adults_page(self) -> None:
         """
@@ -70,10 +74,12 @@ class Handler:
         create_button = self.application.adults_page.create_button
         details_button = self.application.adults_page.details_button
         delete_button = self.application.adults_page.delete_button
+        pdf_button = self.application.adults_page.pdf_button
 
         create_button.config(command=self.handle_open_create_adults_form)
         details_button.config(command=self.handle_open_details_adults_form)
         delete_button.config(command=self.handle_open_delete_adults_dialog)
+        pdf_button.config(command=self.handle_adults_pdf)
 
     def bind_create_children_form(self, form: ChildrenForm) -> None:
         """
@@ -97,6 +103,20 @@ class Handler:
         update_command = partial(self.handle_confirm_update_children, form)
         form.confirm_button.config(command=update_command)
 
+    def bind_pdf_children_form(self, form: PdfForm) -> None:
+        """
+        Bind a PdfForm instance to confirm the generation of a PDF document for a child entity.
+
+        This method binds the specified PdfForm to the action of confirming the generation of a PDF document
+        for a child entity.
+
+        :param form: The PdfForm instance used for specifying the file location and name of the PDF document.
+
+        :return: None
+        """
+        command = partial(self.handle_confirm_children_pdf, form)
+        form.confirm_button.config(command=command)
+
     def bind_create_adults_form(self, form: AdultsForm) -> None:
         """
         Bind actions to the create adults form.
@@ -118,6 +138,20 @@ class Handler:
         """
         update_command = partial(self.handle_confirm_update_adults, form)
         form.confirm_button.config(command=update_command)
+
+    def bind_pdf_adults_form(self, form: PdfForm) -> None:
+        """
+        Bind a PdfForm instance to confirm the generation of a PDF document for an adult entity.
+
+        This method binds the specified PdfForm to the action of confirming the generation of a PDF document
+        for an adult entity.
+
+        :param form: The PdfForm instance used for specifying the file location and name of the PDF document.
+
+        :return: None
+        """
+        command = partial(self.handle_confirm_adults_pdf, form)
+        form.confirm_button.config(command=command)
 
     def handle_home_navbar(self) -> None:
         """
@@ -253,8 +287,8 @@ class Handler:
             ChildRepository.insert_one(values)
 
         except Exception as error:
-            print(error)
             traceback.format_exc()
+            print(error)
 
         else:
             form.destroy()
@@ -277,8 +311,8 @@ class Handler:
             ChildRepository.update_one(child_id, values)
 
         except Exception as error:
-            print(error)
             traceback.format_exc()
+            print(error)
 
         else:
             form.destroy()
@@ -301,11 +335,56 @@ class Handler:
                 ChildRepository.delete_one(child_id)
 
         except Exception as error:
-            print(error)
             traceback.format_exc()
+            print(error)
 
         else:
             self.refresh_children_page()
+
+    def handle_children_pdf(self) -> None:
+        """
+        Handle the request to generate a PDF document for a selected child.
+
+        This method retrieves the selected child from the application's children table and opens a PdfForm
+        for specifying the file location and name of the PDF document.
+
+        :return: None
+        """
+        selection = self.application.get_children_table_selection()
+        if selection is not None:
+            child_id = int(selection[0])
+            child_entity = ChildRepository.select_one(child_id)
+            if child_entity is not None:
+                initialfile = child_entity.child_first_name + '.pdf'
+                initialdir = constants.HOME_DIR
+                form = self.application.open_pdf_form(initialfile, initialdir)
+                self.bind_pdf_children_form(form)
+
+    def handle_confirm_children_pdf(self, form: PdfForm) -> None:
+        """
+        Handle the confirmation of generating a PDF document for a selected child.
+
+        This method generates a PDF document for the selected child using the child's data and the specified
+        file location from the PdfForm.
+
+        :param form: The PdfForm instance containing the selected file location for the PDF document.
+
+        :return: None
+        """
+        try:
+            selection = self.application.get_children_table_selection()
+            if selection is not None:
+                child_id = int(selection[0])
+                child_entity = ChildRepository.select_one(child_id)
+                if child_entity is not None:
+                    pdf_path = form.get_value()
+                    pdf_title = 'Formulário do Prossan'
+                    generate_child_entity_pdf(child_entity, pdf_path, pdf_title)
+                    form.destroy()
+
+        except Exception as error:
+            traceback.format_exc()
+            print(error)
 
     def handle_open_create_adults_form(self) -> None:
         """
@@ -367,8 +446,8 @@ class Handler:
             AdultRepository.insert_one(values)
 
         except Exception as error:
-            print(error)
             traceback.format_exc()
+            print(error)
 
         else:
             form.destroy()
@@ -391,8 +470,8 @@ class Handler:
             AdultRepository.update_one(adult_id, values)
 
         except Exception as error:
-            print(error)
             traceback.format_exc()
+            print(error)
 
         else:
             form.destroy()
@@ -415,11 +494,56 @@ class Handler:
                 AdultRepository.delete_one(adult_id)
 
         except Exception as error:
-            print(error)
             traceback.format_exc()
+            print(error)
 
         else:
             self.refresh_adults_page()
+
+    def handle_adults_pdf(self) -> None:
+        """
+        Handle the request to generate a PDF document for a selected adult.
+
+        This method retrieves the selected adult from the application's adults table and opens a PdfForm
+        for specifying the file location and name of the PDF document.
+
+        :return: None
+        """
+        selection = self.application.get_adults_table_selection()
+        if selection is not None:
+            adult_id = int(selection[0])
+            adult_entity = AdultRepository.select_one(adult_id)
+            if adult_entity is not None:
+                initialfile = adult_entity.adult_first_name + '.pdf'
+                initialdir = constants.HOME_DIR
+                form = self.application.open_pdf_form(initialfile, initialdir)
+                self.bind_pdf_adults_form(form)
+
+    def handle_confirm_adults_pdf(self, form: PdfForm) -> None:
+        """
+        Handle the confirmation of generating a PDF document for a selected adult.
+
+        This method generates a PDF document for the selected adult using the adult's data and the specified
+        file location from the PdfForm.
+
+        :param form: The PdfForm instance containing the selected file location for the PDF document.
+
+        :return: None
+        """
+        try:
+            selection = self.application.get_adults_table_selection()
+            if selection is not None:
+                adult_id = int(selection[0])
+                adult_entity = AdultRepository.select_one(adult_id)
+                if adult_entity is not None:
+                    pdf_path = form.get_value()
+                    pdf_title = 'Formulário do Prossan'
+                    generate_adult_entity_pdf(adult_entity, pdf_path, pdf_title)
+                    form.destroy()
+
+        except Exception as error:
+            traceback.format_exc()
+            print(error)
 
     def refresh_children_page(self) -> None:
         """

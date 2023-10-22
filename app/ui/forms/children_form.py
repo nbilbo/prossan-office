@@ -29,7 +29,7 @@ class ChildrenForm(BaseForm):
         self.save_img = image_tk(constants.ICONS_DIR / 'save.png', (32, 32))
         self.children_img = image_tk(constants.ICONS_DIR / 'children.png', (52, 52))
 
-        self.title('Formulário')
+        self.title('Escritório do Prossan - Formulário para crianças')
         self.header_title.config(text='Formulário para Crianças')
         self.header_title.config(image=self.children_img, compound=tk.TOP)
 

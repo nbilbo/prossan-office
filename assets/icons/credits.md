@@ -33,3 +33,5 @@
 <a href="https://www.flaticon.com/free-icons/google-plus" title="google plus icons">Google plus icons created by Pixel perfect - Flaticon</a>
 
 <a href="https://www.flaticon.com/free-icons/subtract" title="subtract icons">Subtract icons created by Fathema Khanom - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/launch" title="launch icons">Launch icons created by Freepik - Flaticon</a>

@@ -7,7 +7,7 @@ import ttkbootstrap as ttk
 from app.database.entities import AdultEntity, ChildEntity
 from app.ui.components import Footer, NavBar, Toolbar
 from app.ui.dialogs import ConfirmCancelDialog
-from app.ui.forms import AdultsForm, ChildrenForm
+from app.ui.forms import AdultsForm, ChildrenForm, PdfForm
 from app.ui.pages import AdultsPage, ChildrenPage, HomePage
 
 
@@ -233,6 +233,15 @@ class Application(ttk.Window):
         form.set_adult_entity(adult_entity)
         form.confirm_button.config(text='Confirmar alterações')
         form.adult_name_field.entry.focus()
+        form.grab_set()
+        self.apply_style()
+        return form
+
+    def open_pdf_form(
+        self, initialfile: Optional[str] = None, initialdir: Optional[str] = None
+    ) -> PdfForm:
+        form = PdfForm(self, initialfile, initialdir)
+        form.place_window_center()
         form.grab_set()
         self.apply_style()
         return form

@@ -55,21 +55,26 @@
         "(35) 2969-8310"
       ],
       "adult_activities": [
-        "Ingl\u00eas"
+        "Ingl\u00eas",
+        "Inform\u00e1tica"
       ]
     }
   },
   "children": {
     "1": {
       "child_name": "Anderson Jos\u00e9 Almada",
-      "child_gender": "Feminino",
+      "child_gender": "Masculino",
       "child_birthdate": "3/20/2014",
       "child_cpf": "051.197.286-50",
       "child_rg": "48.101.265-5",
       "child_activities": [
-        "Futsal masculino"
+        "Futsal masculino",
+        "Xadrez",
+        "Inform\u00e1tica",
+        "Grafite",
+        "Karat\u00ea"
       ],
-      "parent_name": "Diogo Jo\u00e3o Melo",
+      "parent_name": "Diogo Jo\u00e3o Melo Almeida",
       "parent_gender": "Masculino",
       "parent_birthdate": "15/01/1977",
       "parent_cpf": "805.330.956-97",
@@ -81,7 +86,8 @@
         "MG"
       ],
       "parent_contacts": [
-        "(35) 99564-9752"
+        "(35) 99564-9752",
+        "1234-4321"
       ]
     },
     "2": {
@@ -91,9 +97,11 @@
       "child_cpf": "551.206.866-05",
       "child_rg": "15.337.568-1",
       "child_activities": [
-        "Futsal feminino"
+        "Futsal feminino",
+        "M\u00fasica",
+        "Xadrez"
       ],
-      "parent_name": "Marlene Aurora Isabelle Arag\u00e3o",
+      "parent_name": "Marlene Aurora Esther da Silva",
       "parent_gender": "Feminino",
       "parent_birthdate": "09/04/1979",
       "parent_cpf": "148.845.696-87",

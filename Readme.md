@@ -38,8 +38,8 @@ Execute o programa usando o seguinte comando:
 - [x] CRUD Crianças.
 - [x] CRUD Adultos.
 - [ ] CRUD Voluntários.
-- [ ] PDF Crianças.
-- [ ] PDF Adultos.
+- [x] PDF Crianças.
+- [x] PDF Adultos.
 - [ ] PDF Voluntáios.
 - [ ] Pesquisar Crianças.
 - [ ] Pesquisar Adultos.
