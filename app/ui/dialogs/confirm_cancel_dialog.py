@@ -56,10 +56,10 @@ class ConfirmCancelDialog(ttk.Toplevel):
         self.cancel_button.pack(side=tk.LEFT)
 
         # noinspection PyArgumentList
-        self.confirm_button.config(bootstyle='success-link')
+        self.confirm_button.config(bootstyle='default-link')
 
         # noinspection PyArgumentList
-        self.cancel_button.config(bootstyle='danger-link')
+        self.cancel_button.config(bootstyle='default-link')
 
     def handle_confirm(self) -> None:
         """

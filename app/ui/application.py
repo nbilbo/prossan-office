@@ -6,7 +6,7 @@ import ttkbootstrap as ttk
 
 from app.database.entities import AdultEntity, ChildEntity
 from app.ui.components import Footer, NavBar, Toolbar
-from app.ui.dialogs import ConfirmCancelDialog
+from app.ui.dialogs import ConfirmCancelDialog, DangerDialog, InfoDialog
 from app.ui.forms import AdultsForm, ChildrenForm, PdfForm
 from app.ui.pages import AdultsPage, ChildrenPage, HomePage
 
@@ -59,8 +59,8 @@ class Application(ttk.Window):
         self.theme = self.dark_theme
         self.title('Escritório do Prossan')
         self.update_date_time()
-        self.apply_style()
         self.go_to_home_page()
+        self.apply_style()
 
     def apply_style(self) -> None:
         """
@@ -169,6 +169,28 @@ class Application(ttk.Window):
         dialog.place_window_center()
         dialog.grab_set()
 
+    def open_info_dialog(self, title: str, message: str) -> None:
+        """
+        Open an information dialog.
+
+        :param title: A string representing the title of the information dialog.
+        :param message: A string containing the message to be displayed.
+        """
+        dialog = InfoDialog(self, title, message)
+        dialog.place_window_center()
+        dialog.grab_set()
+
+    def open_danger_dialog(self, title: str, message: str) -> None:
+        """
+        Open a danger dialog.
+
+        :param title: A string representing the title of the information dialog.
+        :param message: A string containing the message to be displayed.
+        """
+        dialog = DangerDialog(self, title, message)
+        dialog.place_window_center()
+        dialog.grab_set()
+
     def open_create_children_form(self) -> ChildrenForm:
         """
         Open a form for creating a new child record.
@@ -240,6 +262,14 @@ class Application(ttk.Window):
     def open_pdf_form(
         self, initialfile: Optional[str] = None, initialdir: Optional[str] = None
     ) -> PdfForm:
+        """
+        Open a PDF form for generating documents.
+
+        :param initialfile: The initial file name to be displayed in the form.
+        :param initialdir: The initial directory path to open in the file dialog.
+
+        :return: An instance of the PdfForm for user interaction.
+        """
         form = PdfForm(self, initialfile, initialdir)
         form.place_window_center()
         form.grab_set()

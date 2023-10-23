@@ -35,3 +35,8 @@
 <a href="https://www.flaticon.com/free-icons/subtract" title="subtract icons">Subtract icons created by Fathema Khanom - Flaticon</a>
 
 <a href="https://www.flaticon.com/free-icons/launch" title="launch icons">Launch icons created by Freepik - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by juicy_fish - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/danger" title="danger icons">Danger icons created by Freepik - Flaticon</a>
+

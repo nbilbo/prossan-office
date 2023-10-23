@@ -247,11 +247,9 @@ class Handler:
         :return: None
         """
         selection = self.application.get_children_table_selection()
-
         if selection is not None:
             child_id = int(selection[0])
             child_entity = ChildRepository.select_one(child_id)
-
             if child_entity is not None:
                 form = self.application.open_details_children_form(child_entity)
                 self.bind_details_children_form(form)
@@ -287,12 +285,15 @@ class Handler:
             ChildRepository.insert_one(values)
 
         except Exception as error:
-            traceback.format_exc()
-            print(error)
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
 
         else:
-            form.destroy()
+            title = 'Informação'
+            message = 'Operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
             self.refresh_children_page()
+            form.destroy()
 
     def handle_confirm_update_children(self, form: ChildrenForm) -> None:
         """
@@ -311,12 +312,15 @@ class Handler:
             ChildRepository.update_one(child_id, values)
 
         except Exception as error:
-            traceback.format_exc()
-            print(error)
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
 
         else:
-            form.destroy()
+            title = 'informação'
+            message = 'operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
             self.refresh_children_page()
+            form.destroy()
 
     def handle_confirm_delete_children(self) -> None:
         """
@@ -329,16 +333,18 @@ class Handler:
         """
         try:
             selection = self.application.get_children_table_selection()
-
             if selection is not None:
                 child_id = int(selection[0])
                 ChildRepository.delete_one(child_id)
 
         except Exception as error:
-            traceback.format_exc()
-            print(error)
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
 
         else:
+            title = 'Informação'
+            message = 'Operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
             self.refresh_children_page()
 
     def handle_children_pdf(self) -> None:
@@ -380,11 +386,16 @@ class Handler:
                     pdf_path = form.get_value()
                     pdf_title = 'Formulário do Prossan'
                     generate_child_entity_pdf(child_entity, pdf_path, pdf_title)
-                    form.destroy()
 
         except Exception as error:
-            traceback.format_exc()
-            print(error)
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
+
+        else:
+            title = 'Informação'
+            message = 'Operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
+            form.destroy()
 
     def handle_open_create_adults_form(self) -> None:
         """
@@ -406,11 +417,9 @@ class Handler:
         :return: None
         """
         selection = self.application.get_adults_table_selection()
-
         if selection is not None:
             adult_id = int(selection[0])
             adult_entity = AdultRepository.select_one(adult_id)
-
             if adult_entity is not None:
                 form = self.application.open_details_adults_form(adult_entity)
                 self.bind_details_adults_form(form)
@@ -446,12 +455,15 @@ class Handler:
             AdultRepository.insert_one(values)
 
         except Exception as error:
-            traceback.format_exc()
-            print(error)
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
 
         else:
-            form.destroy()
+            title = 'Informação'
+            message = 'Operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
             self.refresh_adults_page()
+            form.destroy()
 
     def handle_confirm_update_adults(self, form: AdultsForm) -> None:
         """
@@ -470,12 +482,15 @@ class Handler:
             AdultRepository.update_one(adult_id, values)
 
         except Exception as error:
-            traceback.format_exc()
-            print(error)
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
 
         else:
-            form.destroy()
+            title = 'Informação'
+            message = 'Operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
             self.refresh_adults_page()
+            form.destroy()
 
     def handle_confirm_delete_adults(self) -> None:
         """
@@ -488,16 +503,18 @@ class Handler:
         """
         try:
             selection = self.application.get_adults_table_selection()
-
             if selection is not None:
                 adult_id = int(selection[0])
                 AdultRepository.delete_one(adult_id)
 
         except Exception as error:
-            traceback.format_exc()
-            print(error)
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
 
         else:
+            title = 'Informação'
+            message = 'Operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
             self.refresh_adults_page()
 
     def handle_adults_pdf(self) -> None:
@@ -539,11 +556,16 @@ class Handler:
                     pdf_path = form.get_value()
                     pdf_title = 'Formulário do Prossan'
                     generate_adult_entity_pdf(adult_entity, pdf_path, pdf_title)
-                    form.destroy()
 
         except Exception as error:
-            traceback.format_exc()
-            print(error)
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
+
+        else:
+            title = 'Informação'
+            message = 'Operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
+            form.destroy()
 
     def refresh_children_page(self) -> None:
         """
