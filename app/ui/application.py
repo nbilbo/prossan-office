@@ -7,7 +7,7 @@ import ttkbootstrap as ttk
 from app.database.entities import AdultEntity, ChildEntity
 from app.ui.components import Footer, NavBar, Toolbar
 from app.ui.dialogs import ConfirmCancelDialog, DangerDialog, InfoDialog
-from app.ui.forms import AdultsForm, ChildrenForm, PdfForm
+from app.ui.forms import AdultsForm, ChildrenForm, DocumentForm
 from app.ui.pages import AdultsPage, ChildrenPage, HomePage
 
 
@@ -261,7 +261,7 @@ class Application(ttk.Window):
 
     def open_pdf_form(
         self, initialfile: Optional[str] = None, initialdir: Optional[str] = None
-    ) -> PdfForm:
+    ) -> DocumentForm:
         """
         Open a PDF form for generating documents.
 
@@ -270,7 +270,7 @@ class Application(ttk.Window):
 
         :return: An instance of the PdfForm for user interaction.
         """
-        form = PdfForm(self, initialfile, initialdir)
+        form = DocumentForm(self, initialfile, initialdir)
         form.place_window_center()
         form.grab_set()
         self.apply_style()

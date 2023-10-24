@@ -10,16 +10,16 @@ from app.ui.forms import BaseForm
 from app.utils.images import image_tk
 
 
-class PdfForm(BaseForm):
+class DocumentForm(BaseForm):
     """
-    A form for generating a PDF document with a user-specified name and location.
+    A form for generating a document with a user-specified name and location.
     """
 
     def __init__(
         self, master: tk.Misc, initialfile: Optional[str] = None, initialdir: Optional[str] = None
     ) -> None:
         """
-        Initialize a new PdfForm.
+        Initialize a new DocumentForm.
 
         :param master: The parent widget.
         :param initialfile: The initial filename to display in the form.
@@ -29,7 +29,7 @@ class PdfForm(BaseForm):
         """
 
         super().__init__(master=master)
-        self.title('Escritório do Prossan - Gerar PDF')
+        self.title('Escritório do Prossan - Gerar documento')
         self.geometry('700x300')
 
         self.initialfile = initialfile

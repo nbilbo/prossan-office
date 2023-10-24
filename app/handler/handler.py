@@ -4,7 +4,7 @@ from functools import partial
 from app import constants
 from app.database.repositories import AdultRepository, ChildRepository
 from app.ui import Application
-from app.ui.forms import AdultsForm, ChildrenForm, PdfForm
+from app.ui.forms import AdultsForm, ChildrenForm, DocumentForm
 from app.utils.pdf import generate_adult_entity_pdf, generate_child_entity_pdf
 
 
@@ -103,7 +103,7 @@ class Handler:
         update_command = partial(self.handle_confirm_update_children, form)
         form.confirm_button.config(command=update_command)
 
-    def bind_pdf_children_form(self, form: PdfForm) -> None:
+    def bind_pdf_children_form(self, form: DocumentForm) -> None:
         """
         Bind a PdfForm instance to confirm the generation of a PDF document for a child entity.
 
@@ -139,7 +139,7 @@ class Handler:
         update_command = partial(self.handle_confirm_update_adults, form)
         form.confirm_button.config(command=update_command)
 
-    def bind_pdf_adults_form(self, form: PdfForm) -> None:
+    def bind_pdf_adults_form(self, form: DocumentForm) -> None:
         """
         Bind a PdfForm instance to confirm the generation of a PDF document for an adult entity.
 
@@ -366,7 +366,7 @@ class Handler:
                 form = self.application.open_pdf_form(initialfile, initialdir)
                 self.bind_pdf_children_form(form)
 
-    def handle_confirm_children_pdf(self, form: PdfForm) -> None:
+    def handle_confirm_children_pdf(self, form: DocumentForm) -> None:
         """
         Handle the confirmation of generating a PDF document for a selected child.
 
@@ -536,7 +536,7 @@ class Handler:
                 form = self.application.open_pdf_form(initialfile, initialdir)
                 self.bind_pdf_adults_form(form)
 
-    def handle_confirm_adults_pdf(self, form: PdfForm) -> None:
+    def handle_confirm_adults_pdf(self, form: DocumentForm) -> None:
         """
         Handle the confirmation of generating a PDF document for a selected adult.
 
