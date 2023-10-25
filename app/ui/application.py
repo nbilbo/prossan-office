@@ -5,7 +5,7 @@ from typing import Callable, List, Optional, Tuple
 import ttkbootstrap as ttk
 
 from app.database.entities import AdultEntity, ChildEntity
-from app.ui.components import Footer, NavBar, Toolbar
+from app.ui.components import Footer, Menubar, NavBar, Toolbar
 from app.ui.dialogs import ConfirmCancelDialog, DangerDialog, InfoDialog
 from app.ui.forms import AdultsForm, ChildrenForm, DocumentForm
 from app.ui.pages import AdultsPage, ChildrenPage, HomePage
@@ -30,6 +30,10 @@ class Application(ttk.Window):
 
         self.light_theme = 'cosmo'
         self.dark_theme = 'darkly'
+
+        # menubar.
+        self.menubar = Menubar(self)
+        self.config(menu=self.menubar)
 
         # toolbar.
         self.toolbar = Toolbar(self)
@@ -76,11 +80,11 @@ class Application(ttk.Window):
             Recursively change the font configuration for Tkinter widgets.
 
             This function is used to traverse the widget hierarchy and apply font configuration to specific widgets.
-            It detects ttk.Entry widgets and sets their font to the defined font (self.font).
+            It detects the specific widget and sets their font to the defined font (self.font).
 
             :param widget: The widget to process.
             """
-            if isinstance(widget, ttk.Entry):
+            if isinstance(widget, ttk.Entry) or isinstance(widget, ttk.Menu):
                 widget.config(font=self.font)
             for children in widget.winfo_children():
                 direct_change(children)
@@ -259,11 +263,11 @@ class Application(ttk.Window):
         self.apply_style()
         return form
 
-    def open_pdf_form(
+    def open_document_form(
         self, initialfile: Optional[str] = None, initialdir: Optional[str] = None
     ) -> DocumentForm:
         """
-        Open a PDF form for generating documents.
+        Open a document form for generating documents.
 
         :param initialfile: The initial file name to be displayed in the form.
         :param initialdir: The initial directory path to open in the file dialog.
@@ -329,3 +333,6 @@ class Application(ttk.Window):
         self.geometry('1000x550')
         self.place_window_center()
         self.mainloop()
+
+    def stop(self) -> None:
+        self.destroy()

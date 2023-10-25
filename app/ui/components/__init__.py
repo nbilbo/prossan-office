@@ -7,3 +7,4 @@ from .date_field import DateField  # isort:skip
 from .dropdown_field import DropdownField  # isort:skip
 from .list_field import ListField  # isort:skip
 from .address_field import AddressField  # isort:skip
+from .menubar import Menubar  # isort:skip

@@ -21,10 +21,27 @@ class Handler:
         :param application: An instance of the Application class.
         """
         self.application = application
+        self.bind_menubar()
         self.bind_navbar()
         self.bind_toolbar()
         self.bind_children_page()
         self.bind_adults_page()
+
+    def bind_menubar(self) -> None:
+        """
+        Bind actions to the menubar buttons.
+
+        :return: None
+        """
+        help_menu = self.application.menubar.help_menu
+        file_menu = self.application.menubar.file_menu
+
+        help_menu.add_command(label='Sobre', command=self.handle_about)
+        file_menu.add_command(label='Exportar crianças', command=self.handle_export_children)
+        file_menu.add_command(label='Exportar adultos', command=self.handle_export_adults)
+
+        file_menu.add_separator()
+        file_menu.add_command(label='Sair', command=self.handle_exit)
 
     def bind_navbar(self) -> None:
         """
@@ -152,6 +169,68 @@ class Handler:
         """
         command = partial(self.handle_confirm_adults_pdf, form)
         form.confirm_button.config(command=command)
+
+    def bind_export_children_form(self, form: DocumentForm) -> None:
+        """
+        Bind the export action for children to the provided document form.
+
+        :param form: A DocumentForm to which the export action for children is bound.
+
+        :return: None
+        """
+        command = partial(self.handle_confirm_export_children, form)
+        form.confirm_button.config(command=command)
+
+    def bind_export_adults_form(self, form: DocumentForm) -> None:
+        """
+        Bind the export action for adults to the provided document form.
+
+        :param form: A DocumentForm to which the export action for adults is bound.
+
+        :return: None
+        """
+        command = partial(self.handle_confirm_export_adults, form)
+        form.confirm_button.config(command=command)
+
+    def handle_about(self) -> None:
+        self.application.open_info_dialog('Sobre', 'Função em desenvolvimento')
+
+    def handle_export_children(self) -> None:
+        """
+        Handle the export action for children.
+
+        This method handles the export action for children. It opens a document form for exporting child data.
+
+        :return: None
+        """
+        initialfile = 'criancas.xlsx'
+        initialdir = constants.HOME_DIR
+        form = self.application.open_document_form(initialfile, initialdir)
+        self.bind_export_children_form(form)
+
+    def handle_export_adults(self) -> None:
+        """
+        Handle the export action for adults.
+
+        This method handles the export action for adults. It opens a document form for exporting adult data.
+
+        :return: None
+        """
+        initialfile = 'adultos.xlsx'
+        initialdir = constants.HOME_DIR
+        form = self.application.open_document_form(initialfile, initialdir)
+        self.bind_export_adults_form(form)
+
+    def handle_confirm_export_children(self, form: DocumentForm) -> None:
+        self.application.open_info_dialog('Atenção', 'Função em desenvolvimento')
+        form.destroy()
+
+    def handle_confirm_export_adults(self, form: DocumentForm) -> None:
+        self.application.open_info_dialog('Atenção', 'Função em desenvolvimento')
+        form.destroy()
+
+    def handle_exit(self) -> None:
+        self.application.stop()
 
     def handle_home_navbar(self) -> None:
         """
@@ -363,7 +442,7 @@ class Handler:
             if child_entity is not None:
                 initialfile = child_entity.child_first_name + '.pdf'
                 initialdir = constants.HOME_DIR
-                form = self.application.open_pdf_form(initialfile, initialdir)
+                form = self.application.open_document_form(initialfile, initialdir)
                 self.bind_pdf_children_form(form)
 
     def handle_confirm_children_pdf(self, form: DocumentForm) -> None:
@@ -533,7 +612,7 @@ class Handler:
             if adult_entity is not None:
                 initialfile = adult_entity.adult_first_name + '.pdf'
                 initialdir = constants.HOME_DIR
-                form = self.application.open_pdf_form(initialfile, initialdir)
+                form = self.application.open_document_form(initialfile, initialdir)
                 self.bind_pdf_adults_form(form)
 
     def handle_confirm_adults_pdf(self, form: DocumentForm) -> None:
