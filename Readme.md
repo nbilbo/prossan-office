@@ -41,6 +41,9 @@ Execute o programa usando o seguinte comando:
 - [x] PDF Crianças.
 - [x] PDF Adultos.
 - [ ] PDF Voluntáios.
+- [x] Exportar Crianças.
+- [x] Exportar Adultos.
+- [ ] Exportar Voluntáios.
 - [ ] Pesquisar Crianças.
 - [ ] Pesquisar Adultos.
 - [ ] Pesquisar Voluntáios.

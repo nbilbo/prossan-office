@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Optional
+from collections import defaultdict
+from typing import Any, Dict, List, Optional, Set
 
 from app.database.connections import LocalConnection
 from app.database.entities import ChildEntity
@@ -98,3 +99,33 @@ class ChildRepository:
             database = connection.database
             table = database.table('children')
             table.remove(doc_ids=[child_id])
+
+    @staticmethod
+    def order_by_activities() -> Dict[str, List[ChildEntity]]:
+        """
+        Order child registers by activities.
+
+        :return: A dictionary with activities as keys and lists of child registers as values.
+        """
+        registers = ChildRepository.select_many()
+        result = defaultdict(list)
+
+        for register in registers:
+            for activity in register.child_activities:
+                result[activity].append(register)
+
+        return dict(result)
+
+    @staticmethod
+    def get_activities() -> Set[str]:
+        """
+        Get unique child activities.
+
+        :return: A set containing unique child activities.
+        """
+        activities = set()
+
+        for register in ChildRepository.select_many():
+            activities.update(register.child_activities)
+
+        return activities

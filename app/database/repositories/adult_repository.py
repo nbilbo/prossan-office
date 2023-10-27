@@ -1,4 +1,5 @@
-from typing import Any, Dict, List, Optional
+from collections import defaultdict
+from typing import Any, Dict, List, Optional, Set
 
 from app.database.connections import LocalConnection
 from app.database.entities import AdultEntity
@@ -97,3 +98,33 @@ class AdultRepository:
             database = connection.database
             table = database.table('adults')
             table.remove(doc_ids=[adult_id])
+
+    @staticmethod
+    def order_by_activities() -> Dict[str, List[AdultEntity]]:
+        """
+        Order adult registers by activities.
+
+        :return: A dictionary with activities as keys and lists of adult registers as values.
+        """
+        registers = AdultRepository.select_many()
+        result = defaultdict(list)
+
+        for register in registers:
+            for activity in register.adult_activities:
+                result[activity].append(register)
+
+        return dict(result)
+
+    @staticmethod
+    def get_activities() -> Set[str]:
+        """
+        Get unique adult activities.
+
+        :return: A set containing unique adult activities.
+        """
+        activities = set()
+
+        for register in AdultRepository.select_many():
+            activities.update(register.adult_activities)
+
+        return activities

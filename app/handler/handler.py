@@ -5,6 +5,7 @@ from app import constants
 from app.database.repositories import AdultRepository, ChildRepository
 from app.ui import Application
 from app.ui.forms import AdultsForm, ChildrenForm, DocumentForm
+from app.utils.excel import export_adults_to_excel, export_children_to_excel
 from app.utils.pdf import generate_adult_entity_pdf, generate_child_entity_pdf
 
 
@@ -222,14 +223,57 @@ class Handler:
         self.bind_export_adults_form(form)
 
     def handle_confirm_export_children(self, form: DocumentForm) -> None:
-        self.application.open_info_dialog('Atenção', 'Função em desenvolvimento')
-        form.destroy()
+        """
+        Handle the export of child registers to an Excel file.
+
+        :param form: The `DocumentForm` containing the export file path.
+
+        :return: None
+        """
+        try:
+            values = ChildRepository.order_by_activities()
+            file_path = form.get_value()
+            export_children_to_excel(values, file_path)
+
+        except Exception as error:
+            print(traceback.format_exc())
+            self.application.open_danger_dialog('Atenção', str(error))
+
+        else:
+            form.destroy()
+            title = 'Informação'
+            message = 'Operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
 
     def handle_confirm_export_adults(self, form: DocumentForm) -> None:
-        self.application.open_info_dialog('Atenção', 'Função em desenvolvimento')
-        form.destroy()
+        """
+        Handle the export of adult registers to an Excel file.
+
+        :param form: The `DocumentForm` containing the export file path.
+
+        :return: None
+        """
+        try:
+            values = AdultRepository.order_by_activities()
+            file_path = form.get_value()
+            export_adults_to_excel(values, file_path)
+
+        except Exception as error:
+            print(traceback.format_exc())
+            self.application.open_danger_dialog('Atenção', str(error))
+
+        else:
+            form.destroy()
+            title = 'Informação'
+            message = 'Operação realizada com sucesso.'
+            self.application.open_info_dialog(title, message)
 
     def handle_exit(self) -> None:
+        """
+        Handle the application exit.
+
+        :return: None
+        """
         self.application.stop()
 
     def handle_home_navbar(self) -> None:
