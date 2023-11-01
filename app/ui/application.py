@@ -4,11 +4,13 @@ from typing import Callable, List, Optional, Tuple
 
 import ttkbootstrap as ttk
 
+from app import constants
 from app.database.entities import AdultEntity, ChildEntity
 from app.ui.components import Footer, Menubar, NavBar, Toolbar
 from app.ui.dialogs import ConfirmCancelDialog, DangerDialog, InfoDialog
 from app.ui.forms import AdultsForm, ChildrenForm, DocumentForm
 from app.ui.pages import AdultsPage, ChildrenPage, HomePage
+from app.utils.images import image_tk
 
 
 class Application(ttk.Window):
@@ -22,6 +24,9 @@ class Application(ttk.Window):
 
     def __init__(self) -> None:
         super().__init__()
+        # images.
+        self.logo_img = image_tk(constants.IMAGES_DIR / 'logo.jpg')
+
         # style.
         self.font_family = None
         self.font_size = 12
@@ -62,6 +67,7 @@ class Application(ttk.Window):
         # initial state.
         self.theme = self.dark_theme
         self.title('Escritório do Prossan')
+        self.iconphoto(True, self.logo_img)
         self.update_date_time()
         self.go_to_home_page()
         self.apply_style()
