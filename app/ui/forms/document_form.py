@@ -15,9 +15,7 @@ class DocumentForm(BaseForm):
     A form for generating a document with a user-specified name and location.
     """
 
-    def __init__(
-        self, master: tk.Misc, initialfile: Optional[str] = None, initialdir: Optional[str] = None
-    ) -> None:
+    def __init__(self, master: tk.Misc, initialfile: Optional[str] = None, initialdir: Optional[str] = None) -> None:
         """
         Initialize a new DocumentForm.
 

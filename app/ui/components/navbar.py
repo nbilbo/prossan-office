@@ -35,7 +35,7 @@ class NavBar(ttk.Frame):
         self.home_button.pack(side=ttk.TOP, fill=ttk.BOTH, expand=ttk.YES)
 
         self.children_button = ttk.Button(self)
-        self.children_button.config(text='Crianças')
+        self.children_button.config(text='Crianças e adolencentes')
         self.children_button.config(image=self.children_img, compound=tk.TOP)
         self.children_button.config(cursor='hand2')
         self.children_button.pack(side=ttk.TOP, fill=ttk.BOTH, expand=ttk.YES)

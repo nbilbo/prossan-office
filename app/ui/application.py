@@ -100,6 +100,7 @@ class Application(ttk.Window):
         style.configure('.', font=self.font)
         style.configure('Treeview', rowheight=self.font_size * 2)
         style.configure('TCombobox', arrowsize=self.font_size + 10)
+        style.configure('TSpinbox', arrowsize=self.font_size + 10)
         self.option_add('*TCombobox*Listbox.font', self.font)
         direct_change(self)
 
@@ -269,9 +270,7 @@ class Application(ttk.Window):
         self.apply_style()
         return form
 
-    def open_document_form(
-        self, initialfile: Optional[str] = None, initialdir: Optional[str] = None
-    ) -> DocumentForm:
+    def open_document_form(self, initialfile: Optional[str] = None, initialdir: Optional[str] = None) -> DocumentForm:
         """
         Open a document form for generating documents.
 

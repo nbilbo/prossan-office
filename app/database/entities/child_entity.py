@@ -12,6 +12,13 @@ class ChildEntity:
     child_birthdate: str
     child_cpf: str
     child_rg: str
+    child_ethnicity: str
+    child_religion: str
+    child_clothing_number: str
+    child_shoe_number: str
+    child_school_name: str
+    child_school_degree: str
+    child_school_period: str
     child_activities: List[str]
 
     parent_name: str
@@ -19,6 +26,9 @@ class ChildEntity:
     parent_birthdate: str
     parent_cpf: str
     parent_rg: str
+    parent_household_income: str
+    parent_housing: Tuple[str, str]
+    parent_authorization: str
     parent_address: Tuple[str, str, str, str]
     parent_contacts: List[str]
 

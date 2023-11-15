@@ -1,18 +1,11 @@
+from datetime import datetime
 from typing import List, Tuple
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import inch
-from reportlab.platypus import (
-    Image,
-    ListFlowable,
-    Paragraph,
-    SimpleDocTemplate,
-    Spacer,
-    Table,
-    TableStyle,
-)
+from reportlab.platypus import Image, ListFlowable, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 from app import constants
 from app.database.entities import AdultEntity, ChildEntity
@@ -30,7 +23,11 @@ HEADER_DESC = [
     'PRAÇA VER. JOSÉ CUSTÓDIO FERREIRA N. 01 BAIRRO SANTO ANTÔNIO POUSO ALEGRE MG',
 ]
 
-HEADER_PARAGRAPH_STYLE = ParagraphStyle('HeaderParagraph', fontSize=7, spaceAfter=6)
+HEADER_PARAGRAPH_STYLE = ParagraphStyle(name='HeaderParagraph', fontSize=7, spaceAfter=6)
+
+TITLE_PARAGRAPH_STYLE = ParagraphStyle(name='TitleParagraph', alignment=1, fontSize=20)
+
+SIGN_PARAGRAPH_STYLE = ParagraphStyle(name='SignParagraph', alignment=1, fontSize=14, spaceAfter=6)
 
 HEADER_DESC_FLOWABLE = ListFlowable(
     [Paragraph(desc, HEADER_PARAGRAPH_STYLE) for desc in HEADER_DESC],
@@ -48,8 +45,8 @@ HEADER_TABLE_STYLE = TableStyle(
 INFO_TABLE_STYLE = TableStyle(
     [
         # header.
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.white),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
         # content.
         ('BACKGROUND', (0, 1), (-1, -1), colors.white),
         ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
@@ -75,7 +72,7 @@ def generate_table(data: List[List], col_widths: Tuple[int, int], table_style: T
 
     :return: A `Table` object representing the generated table.
     """
-    table = Table(data, colWidths=col_widths)
+    table = Table(data, colWidths=col_widths, repeatRows=1)
     table.setStyle(table_style)
     return table
 
@@ -119,34 +116,38 @@ def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: 
     # Header table.
     header_table_data = [[HEADER_IMAGE, HEADER_DESC_FLOWABLE]]
     header_table = generate_table(header_table_data, (150, 350), HEADER_TABLE_STYLE)
-
-    # Add the header table to the elements list
     elements.append(header_table)
-
-    # Add a spacer to create space below the header
     elements.append(Spacer(1, 0.4 * inch))
 
-    # Create a data list for the child's table
+    # Title.
+    title = 'Ficha de matricula para crianças e adolecentes'
+    elements.append(Paragraph(title, style=TITLE_PARAGRAPH_STYLE))
+    elements.append(Spacer(1, 0.4 * inch))
+
+    # Create a data list for the child's table.
     child_data = [
-        ['Informações da criança'],
+        ['Informações'],
         ['Nome', child_entity.child_name],
         ['Gênero', child_entity.child_gender],
         ['Data de nascimento', child_entity.child_birthdate],
         ['CPF', child_entity.child_cpf],
         ['RG', child_entity.child_rg],
+        ['Etinia (Raça)', child_entity.child_ethnicity],
+        ['Religião', child_entity.child_religion],
+        ['Número da roupa', child_entity.child_clothing_number],
+        ['Número do calçado', child_entity.child_shoe_number],
+        ['Nome da escola', child_entity.child_school_name],
+        ['Escolaridade', child_entity.child_school_degree],
+        ['Periodo esoolar', child_entity.child_school_period],
         ['Atividades pretendidas no Prossan', '\n'.join(child_entity.child_activities)],
     ]
 
-    # Create the child's table and set styles
+    # Create the child's table and set styles.
     child_table = generate_table(child_data, (250, 250), INFO_TABLE_STYLE)
-
-    # Add the child's table to the elements list
     elements.append(child_table)
-
-    # Add a spacer to create a margin between the child and parent tables
     elements.append(Spacer(1, 0.4 * inch))
 
-    # Create a data list for the parent's table
+    # Create a data list for the parent's table.
     parent_data = [
         ['Informações do responsável'],
         ['Nome', child_entity.parent_name],
@@ -154,17 +155,24 @@ def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: 
         ['Data de nascimento:', child_entity.parent_birthdate],
         ['CPF', child_entity.parent_cpf],
         ['RG', child_entity.parent_rg],
+        ['Renda familiar', child_entity.parent_household_income],
+        ['Moradia', '\n'.join(child_entity.parent_housing)],
         ['Endereço', '\n'.join(child_entity.parent_address)],
         ['Contatos', '\n'.join(child_entity.parent_contacts)],
+        ['Autorizaçao p/ pratica de exercicios', child_entity.parent_authorization],
     ]
 
-    # Create the parent's table and set styles
+    # Create the parent's table and set styles.
     parent_table = generate_table(parent_data, (250, 250), INFO_TABLE_STYLE)
-
-    # Add the parent's table to the elements list
     elements.append(parent_table)
+    elements.append(Spacer(1, 0.4 * inch))
 
-    # Build the PDF document
+    # Sign.
+    elements.append(Paragraph('_' * 60, style=SIGN_PARAGRAPH_STYLE))
+    elements.append(Paragraph('Assinatura do responsável', style=SIGN_PARAGRAPH_STYLE))
+    elements.append(Paragraph(datetime.now().strftime('%d/%B/%Y'), style=SIGN_PARAGRAPH_STYLE))
+
+    # Build the PDF document.
     doc.build(elements)
 
 
@@ -184,14 +192,10 @@ def generate_adult_entity_pdf(adult_entity: AdultEntity, file_path: str, title: 
     # Header table.
     header_table_data = [[HEADER_IMAGE, HEADER_DESC_FLOWABLE]]
     header_table = generate_table(header_table_data, (150, 350), HEADER_TABLE_STYLE)
-
-    # Add the header table to the elements list
     elements.append(header_table)
-
-    # Add a spacer to create space below the header
     elements.append(Spacer(1, 0.4 * inch))
 
-    # Create a data list for the adult's table
+    # Create a data list for the adult's table.
     adult_data = [
         ['Informações'],
         ['Nome', adult_entity.adult_name],
@@ -204,11 +208,9 @@ def generate_adult_entity_pdf(adult_entity: AdultEntity, file_path: str, title: 
         ['Contatos', '\n'.join(adult_entity.adult_contacts)],
     ]
 
-    # Create the parent's table and set styles
+    # Create the parent's table and set styles.
     adult_table = generate_table(adult_data, (250, 250), INFO_TABLE_STYLE)
-
-    # Add the parent's table to the elements list
     elements.append(adult_table)
 
-    # Build the PDF document
+    # Build the PDF document.
     doc.build(elements)

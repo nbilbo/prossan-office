@@ -3,8 +3,11 @@ from .toolbar import Toolbar  # isort:skip
 from .footer import Footer  # isort:skip
 from .table import Table  # isort:skip
 from .text_field import TextField  # isort:skip
+from .spin_field import SpinField  # isort:skip
+from .radio_field import RadioField  # isort:skip
 from .date_field import DateField  # isort:skip
 from .dropdown_field import DropdownField  # isort:skip
 from .list_field import ListField  # isort:skip
 from .address_field import AddressField  # isort:skip
+from .housing_field import HousingField  # isort:skip
 from .menubar import Menubar  # isort:skip
