@@ -27,7 +27,15 @@ HEADER_PARAGRAPH_STYLE = ParagraphStyle(name='HeaderParagraph', fontSize=7, spac
 
 TITLE_PARAGRAPH_STYLE = ParagraphStyle(name='TitleParagraph', alignment=1, fontSize=20)
 
-SIGN_PARAGRAPH_STYLE = ParagraphStyle(name='SignParagraph', alignment=1, fontSize=14, spaceAfter=6)
+OBSERVATION_TITLE_STYLE = ParagraphStyle(name='ObservanceTitleParagraph', alignment=1, fontSize=14, spaceAfter=6)
+
+OBSERVATION_TEXT_STYLE = ParagraphStyle(name='ObservanceTextParagraph', alignment=1, fontSize=12, spaceAfter=6)
+
+SIGN_PARAGRAPH_STYLE = ParagraphStyle(name='SignParagraph', alignment=1, fontSize=12, spaceAfter=6)
+
+SOCIAL_TITLE_STYLE = ParagraphStyle(name='SocialTitleParagraph', alignment=1, fontSize=14, spaceAfter=6)
+
+SOCIAL_TEXT_STYLE = ParagraphStyle(name='SocialTextParagraph', alignment=1, fontSize=12, spaceAfter=12)
 
 HEADER_DESC_FLOWABLE = ListFlowable(
     [Paragraph(desc, HEADER_PARAGRAPH_STYLE) for desc in HEADER_DESC],
@@ -58,6 +66,20 @@ INFO_TABLE_STYLE = TableStyle(
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ]
 )
+
+
+def format_housing(housing: Tuple[str, str]) -> str:
+    type_housing = f'Tipo: {housing[0]}'
+    paid_monthly = f'Mensalidade: R$ {housing[1] if len(housing[1]) else "000.00"}'
+    return '\n'.join((type_housing, paid_monthly))
+
+
+def format_address(address: Tuple[str, str, str, str]) -> str:
+    street = f'Rua: {address[0]}'
+    district = f'Bairro: {address[1]}'
+    city = f'Cidade: {address[2]}'
+    state = f'Estado: {address[3]}'
+    return '\n'.join((street, district, city, state))
 
 
 def generate_table(data: List[List], col_widths: Tuple[int, int], table_style: TableStyle) -> Table:
@@ -120,7 +142,7 @@ def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: 
     elements.append(Spacer(1, 0.4 * inch))
 
     # Title.
-    title = 'Ficha de matricula para crianças e adolecentes'
+    title = 'Ficha de matricula de crianças e adolecentes'
     elements.append(Paragraph(title, style=TITLE_PARAGRAPH_STYLE))
     elements.append(Spacer(1, 0.4 * inch))
 
@@ -156,8 +178,8 @@ def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: 
         ['CPF', child_entity.parent_cpf],
         ['RG', child_entity.parent_rg],
         ['Renda familiar', child_entity.parent_household_income],
-        ['Moradia', '\n'.join(child_entity.parent_housing)],
-        ['Endereço', '\n'.join(child_entity.parent_address)],
+        ['Moradia', format_housing(child_entity.parent_housing)],
+        ['Endereço', format_address(child_entity.parent_address)],
         ['Contatos', '\n'.join(child_entity.parent_contacts)],
         ['Autorizaçao p/ pratica de exercicios', child_entity.parent_authorization],
     ]
@@ -168,9 +190,35 @@ def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: 
     elements.append(Spacer(1, 0.4 * inch))
 
     # Sign.
-    elements.append(Paragraph('_' * 60, style=SIGN_PARAGRAPH_STYLE))
+    elements.append(Paragraph('_ _' * 20, style=SIGN_PARAGRAPH_STYLE))
     elements.append(Paragraph('Assinatura do responsável', style=SIGN_PARAGRAPH_STYLE))
     elements.append(Paragraph(datetime.now().strftime('%d/%B/%Y'), style=SIGN_PARAGRAPH_STYLE))
+    elements.append(Spacer(1, 0.4 * inch))
+
+    # Social validation.
+    social_title = 'Avaliação Social'
+
+    social_text = (
+        'Confome Estatuto Social do Prossan, que visa atender as pessoas de baixa renda, '
+        'concluo que o requerente acima enquadra (Sim) ou (Não) no critério de avaliação social.'
+    )
+
+    social_checkbox = 'Admito ( ) Não Admito( )'
+
+    social_sign = 'Assinatura Assistente Social'
+
+    elements.append(Paragraph(social_title, SOCIAL_TITLE_STYLE))
+    elements.append(Paragraph(social_text, SOCIAL_TEXT_STYLE))
+    elements.append(Paragraph(social_checkbox, SOCIAL_TEXT_STYLE))
+    elements.append(Paragraph('_ _' * 20, style=SOCIAL_TEXT_STYLE))
+    elements.append(Paragraph(social_sign, SIGN_PARAGRAPH_STYLE))
+    elements.append(Spacer(1, 0.4 * inch))
+
+    # Observation.
+    observation_title = 'Observação'
+    observation_text = 'O Prossan não se responsabiliza pelo fornecimento do material nem guarda dos mesmos.'
+    elements.append(Paragraph(observation_title, style=OBSERVATION_TITLE_STYLE))
+    elements.append(Paragraph(observation_text, style=OBSERVATION_TEXT_STYLE))
 
     # Build the PDF document.
     doc.build(elements)

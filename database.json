@@ -12,7 +12,7 @@
       "child_shoe_number": "20",
       "child_school_name": "Dom Ot\u00e1vio",
       "child_school_degree": "Ensino fundamental",
-      "child_school_period": "Tarde",
+      "child_school_period": "Noite",
       "child_activities": [
         "jiu-jitsu",
         "futsal masculino"
@@ -25,9 +25,9 @@
       "parent_household_income": "Tr\u00eas ou mais sal\u00e1rios m\u00ednimos",
       "parent_housing": [
         "Alugada",
-        "800,00"
+        "900,00"
       ],
-      "parent_authorization": "Sim",
+      "parent_authorization": "N\u00e3o",
       "parent_address": [
         "Rua dos pass\u00e1ros",
         "Bairro dos pinheiros",
