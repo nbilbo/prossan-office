@@ -1,3 +1,5 @@
+# Ok, is really complicate create pdf files.
+
 from datetime import datetime
 from typing import List, Tuple
 
@@ -27,15 +29,11 @@ HEADER_PARAGRAPH_STYLE = ParagraphStyle(name='HeaderParagraph', fontSize=7, spac
 
 TITLE_PARAGRAPH_STYLE = ParagraphStyle(name='TitleParagraph', alignment=1, fontSize=20)
 
-OBSERVATION_TITLE_STYLE = ParagraphStyle(name='ObservanceTitleParagraph', alignment=1, fontSize=14, spaceAfter=6)
+BIG_PARAGRAPH_STYLE = ParagraphStyle(name='BigParagraph', alignment=1, fontSize=16, spaceAfter=6)
 
-OBSERVATION_TEXT_STYLE = ParagraphStyle(name='ObservanceTextParagraph', alignment=1, fontSize=12, spaceAfter=6)
+NORMAL_PARAGRAPH_STYLE = ParagraphStyle(name='NormalParagraph', alignment=1, fontSize=14, spaceAfter=6)
 
-SIGN_PARAGRAPH_STYLE = ParagraphStyle(name='SignParagraph', alignment=1, fontSize=12, spaceAfter=6)
-
-SOCIAL_TITLE_STYLE = ParagraphStyle(name='SocialTitleParagraph', alignment=1, fontSize=14, spaceAfter=6)
-
-SOCIAL_TEXT_STYLE = ParagraphStyle(name='SocialTextParagraph', alignment=1, fontSize=12, spaceAfter=12)
+SMALL_PARAGRAPH_STYLE = ParagraphStyle(name='SmallParagraph', alignment=1, fontSize=12, spaceAfter=6)
 
 HEADER_DESC_FLOWABLE = ListFlowable(
     [Paragraph(desc, HEADER_PARAGRAPH_STYLE) for desc in HEADER_DESC],
@@ -69,17 +67,40 @@ INFO_TABLE_STYLE = TableStyle(
 
 
 def format_housing(housing: Tuple[str, str]) -> str:
+    """
+    Formats a housing tuple into a string.
+
+    :param housing: A tuple containing housing info.
+    :return: A formatted string containing housing info.
+    """
     type_housing = f'Tipo: {housing[0]}'
     paid_monthly = f'Mensalidade: R$ {housing[1] if len(housing[1]) else "000.00"}'
     return '\n'.join((type_housing, paid_monthly))
 
 
 def format_address(address: Tuple[str, str, str, str]) -> str:
+    """
+    Formats an address tuple into a string.
+
+    :param address: A tuple containing address info.
+    :return: A formatted string containing address info.
+    """
     street = f'Rua: {address[0]}'
     district = f'Bairro: {address[1]}'
     city = f'Cidade: {address[2]}'
     state = f'Estado: {address[3]}'
     return '\n'.join((street, district, city, state))
+
+
+def generate_header_table() -> Table:
+    """
+    Generate a header table for a PDF document using predefined constants.
+
+    :return: A `Table` object representing the generated header table.
+    """
+    header_table_data = [[HEADER_IMAGE, HEADER_DESC_FLOWABLE]]
+    header_table = generate_table(header_table_data, (150, 350), HEADER_TABLE_STYLE)
+    return header_table
 
 
 def generate_table(data: List[List], col_widths: Tuple[int, int], table_style: TableStyle) -> Table:
@@ -122,32 +143,8 @@ def generate_simple_document(file_path: str, title: str) -> SimpleDocTemplate:
     )
 
 
-def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: str) -> None:
-    """
-    Generate a PDF document for a ChildEntity.
-
-    :param child_entity: The ChildEntity object to be represented in the PDF.
-    :param file_path: The path where the generated PDF file will be saved.
-    :param title: Document title.
-
-    :return: None
-    """
-    doc = generate_simple_document(file_path, title)
-    elements = []
-
-    # Header table.
-    header_table_data = [[HEADER_IMAGE, HEADER_DESC_FLOWABLE]]
-    header_table = generate_table(header_table_data, (150, 350), HEADER_TABLE_STYLE)
-    elements.append(header_table)
-    elements.append(Spacer(1, 0.4 * inch))
-
-    # Title.
-    title = 'Ficha de matricula de crianças e adolecentes'
-    elements.append(Paragraph(title, style=TITLE_PARAGRAPH_STYLE))
-    elements.append(Spacer(1, 0.4 * inch))
-
-    # Create a data list for the child's table.
-    child_data = [
+def generate_child_data(child_entity: ChildEntity) -> List[List]:
+    return [
         ['Informações'],
         ['Nome', child_entity.child_name],
         ['Gênero', child_entity.child_gender],
@@ -164,13 +161,9 @@ def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: 
         ['Atividades pretendidas no Prossan', '\n'.join(child_entity.child_activities)],
     ]
 
-    # Create the child's table and set styles.
-    child_table = generate_table(child_data, (250, 250), INFO_TABLE_STYLE)
-    elements.append(child_table)
-    elements.append(Spacer(1, 0.4 * inch))
 
-    # Create a data list for the parent's table.
-    parent_data = [
+def generate_parent_data(child_entity: ChildEntity) -> List[List]:
+    return [
         ['Informações do responsável'],
         ['Nome', child_entity.parent_name],
         ['Gênero', child_entity.parent_gender],
@@ -184,41 +177,69 @@ def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: 
         ['Autorizaçao p/ pratica de exercicios', child_entity.parent_authorization],
     ]
 
-    # Create the parent's table and set styles.
-    parent_table = generate_table(parent_data, (250, 250), INFO_TABLE_STYLE)
-    elements.append(parent_table)
-    elements.append(Spacer(1, 0.4 * inch))
 
-    # Sign.
-    elements.append(Paragraph('_ _' * 20, style=SIGN_PARAGRAPH_STYLE))
-    elements.append(Paragraph('Assinatura do responsável', style=SIGN_PARAGRAPH_STYLE))
-    elements.append(Paragraph(datetime.now().strftime('%d/%B/%Y'), style=SIGN_PARAGRAPH_STYLE))
-    elements.append(Spacer(1, 0.4 * inch))
+def generate_signature_section(elements: List, text: str, show_date: bool = False) -> None:
+    elements.append(Paragraph('_ _' * 20, style=NORMAL_PARAGRAPH_STYLE))
+    elements.append(Paragraph(text, style=NORMAL_PARAGRAPH_STYLE))
 
-    # Social validation.
-    social_title = 'Avaliação Social'
+    if show_date:
+        elements.append(Paragraph(datetime.now().strftime('%d/%B/%Y'), style=NORMAL_PARAGRAPH_STYLE))
+        elements.append(Spacer(1, 0.4 * inch))
 
-    social_text = (
+
+def generate_observation_section(elements: List) -> None:
+    observation_title = 'Observação'
+    observation_text = 'O Prossan não se responsabiliza pelo fornecimento do material nem guarda dos mesmos.'
+    elements.append(Paragraph(observation_title, style=BIG_PARAGRAPH_STYLE))
+    elements.append(Paragraph(observation_text, style=NORMAL_PARAGRAPH_STYLE))
+
+
+def generate_social_validation_section(elements: List) -> None:
+    text = (
         'Confome Estatuto Social do Prossan, que visa atender as pessoas de baixa renda, '
         'concluo que o requerente acima enquadra (Sim) ou (Não) no critério de avaliação social.'
     )
 
-    social_checkbox = 'Admito ( ) Não Admito( )'
+    elements.append(Paragraph('Avaliação Social', BIG_PARAGRAPH_STYLE))
+    elements.append(Paragraph(text, NORMAL_PARAGRAPH_STYLE))
+    elements.append(Paragraph('Admito ( ) Não Admito( )', NORMAL_PARAGRAPH_STYLE))
+    elements.append(Spacer(1, 0.2 * inch))
+    elements.append(generate_signature_section(elements, 'Assinatura Assistente Social', False))
 
-    social_sign = 'Assinatura Assistente Social'
 
-    elements.append(Paragraph(social_title, SOCIAL_TITLE_STYLE))
-    elements.append(Paragraph(social_text, SOCIAL_TEXT_STYLE))
-    elements.append(Paragraph(social_checkbox, SOCIAL_TEXT_STYLE))
-    elements.append(Paragraph('_ _' * 20, style=SOCIAL_TEXT_STYLE))
-    elements.append(Paragraph(social_sign, SIGN_PARAGRAPH_STYLE))
+def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: str) -> None:
+    """
+    Generate a PDF document for a ChildEntity.
+
+    :param child_entity: The ChildEntity object to be represented in the PDF.
+    :param file_path: The path where the generated PDF file will be saved.
+    :param title: Document title.
+
+    :return: None
+    """
+    elements = []
+    doc = generate_simple_document(file_path, title)
+
+    elements.append(generate_header_table())
     elements.append(Spacer(1, 0.4 * inch))
 
-    # Observation.
-    observation_title = 'Observação'
-    observation_text = 'O Prossan não se responsabiliza pelo fornecimento do material nem guarda dos mesmos.'
-    elements.append(Paragraph(observation_title, style=OBSERVATION_TITLE_STYLE))
-    elements.append(Paragraph(observation_text, style=OBSERVATION_TEXT_STYLE))
+    elements.append(Paragraph('Ficha de matricula de crianças e adolecentes', style=TITLE_PARAGRAPH_STYLE))
+    elements.append(Spacer(1, 0.4 * inch))
+
+    elements.append(generate_table(generate_child_data(child_entity), (250, 250), INFO_TABLE_STYLE))
+    elements.append(Spacer(1, 0.4 * inch))
+
+    elements.append(generate_table(generate_parent_data(child_entity), (250, 250), INFO_TABLE_STYLE))
+    elements.append(Spacer(1, 0.4 * inch))
+
+    generate_observation_section(elements)
+    elements.append(Spacer(1, 0.4 * inch))
+
+    generate_signature_section(elements, 'Assinatura do responsável', True)
+    elements.append(Spacer(1, 0.4 * inch))
+
+    generate_social_validation_section(elements)
+    elements.append(Spacer(1, 0.4 * inch))
 
     # Build the PDF document.
     doc.build(elements)
