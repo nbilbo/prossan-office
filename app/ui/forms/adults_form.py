@@ -5,7 +5,7 @@ import ttkbootstrap as ttk
 
 from app import constants
 from app.database.entities import AdultEntity
-from app.ui.components import AddressField, DropdownField, ListField, TextField
+from app.ui.components import AddressField, DropdownField, HousingField, ListField, SpinField, TextField
 from app.ui.forms import BaseForm
 from app.utils.images import image_tk
 
@@ -38,7 +38,7 @@ class AdultsForm(BaseForm):
         adult_container.config(text='Detalhes')
         adult_container.config(padding=10)
         adult_container.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
-        ttk.Frame(self.container).pack(side=tk.TOP, fill=tk.X, pady=50)
+        ttk.Frame(self.container).pack(side=tk.TOP, fill=tk.X, pady=25)
 
         self.adult_name_field = TextField(adult_container)
         self.adult_name_field.label.config(text='Nome')
@@ -66,14 +66,49 @@ class AdultsForm(BaseForm):
         self.adult_rg_field.pack(side=tk.TOP, fill=tk.X)
         ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=10)
 
+        self.adult_ethnicity_field = DropdownField(adult_container)
+        self.adult_ethnicity_field.label.config(text='Etinia (Raça)')
+        self.adult_ethnicity_field.set_options(constants.ETHNICITY_OPTIONS)
+        self.adult_ethnicity_field.pack(side=tk.TOP, fill=tk.X)
+        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=10)
+
+        self.adult_religion_field = DropdownField(adult_container)
+        self.adult_religion_field.label.config(text='Religião')
+        self.adult_religion_field.set_options(constants.RELIGION_OPTIONS)
+        self.adult_religion_field.pack(side=tk.TOP, fill=tk.X)
+        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=10)
+
+        self.adult_marital_status_field = DropdownField(adult_container)
+        self.adult_marital_status_field.label.config(text='Estado civil')
+        self.adult_marital_status_field.set_options(constants.MARITAL_STATUS)
+        self.adult_marital_status_field.pack(side=tk.TOP, fill=tk.X)
+        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=10)
+
+        self.adult_household_income_field = DropdownField(adult_container)
+        self.adult_household_income_field.label.config(text='Renda familiar')
+        self.adult_household_income_field.set_options(constants.HOUSEHOLD_OPTIONS)
+        self.adult_household_income_field.pack(side=tk.TOP, fill=tk.X)
+        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=10)
+
+        self.adult_residents = SpinField(adult_container)
+        self.adult_residents.label.config(text='Residentes no domicilio')
+        self.adult_residents.spinbox.config(from_=1, to=1000)
+        self.adult_residents.set_value('1')
+        self.adult_residents.pack(side=tk.TOP, fill=tk.X)
+        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=20)
+
+        self.adult_housing_field = HousingField(adult_container)
+        self.adult_housing_field.pack(side=tk.TOP, fill=tk.X)
+        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=20)
+
         self.adult_address_field = AddressField(adult_container)
         self.adult_address_field.pack(side=tk.TOP, fill=tk.X)
-        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=10)
+        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=20)
 
         self.adult_contacts_field = ListField(adult_container)
         self.adult_contacts_field.config(text='Lista de contatos')
         self.adult_contacts_field.pack(side=tk.TOP, fill=tk.X)
-        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=25)
+        ttk.Frame(adult_container).pack(side=tk.TOP, fill=tk.X, pady=20)
 
         self.adult_activities_field = ListField(adult_container)
         self.adult_activities_field.config(text='Atividades pretendidas no Prossan')
@@ -133,6 +168,54 @@ class AdultsForm(BaseForm):
         :return: A string representing the current value in the adult rg field.
         """
         return self.adult_rg_field.get_value()
+
+    def get_adult_ethnicity(self) -> str:
+        """
+        Retrieve the current value in the adult ethnicity field.
+
+        :return: A string representing the current value in the adult ethnicity field.
+        """
+        return self.adult_ethnicity_field.get_value()
+
+    def get_adult_religion(self) -> str:
+        """
+        Retrieve the current value in the adult religion field.
+
+        :return: A string representing the current value in the adult religion field.
+        """
+        return self.adult_religion_field.get_value()
+
+    def get_adult_marital_status(self) -> str:
+        """
+        Retrieve the current value in the adult marital field.
+
+        :return: A string representing the current value in the adult marital field.
+        """
+        return self.adult_marital_status_field.get_value()
+
+    def get_adult_household_income(self) -> str:
+        """
+        Retrieve the current value in the adult household income field.
+
+        :return: A string representing the current value in the adult household income field.
+        """
+        return self.adult_household_income_field.get_value()
+
+    def get_adult_housing(self) -> Tuple[str, str]:
+        """
+        Retrieve the current value in the adult housing field.
+
+        :return: A string representing the current value in the adult housing field.
+        """
+        return self.adult_housing_field.get_value()
+
+    def get_adult_residents(self) -> str:
+        """
+        Retrieve the current value in the adult residents field.
+
+        :return: A string representing the current value in the adult residents field.
+        """
+        return self.adult_residents.get_value()
 
     def get_adult_activities(self) -> List[str]:
         """
@@ -208,6 +291,67 @@ class AdultsForm(BaseForm):
         """
         self.adult_rg_field.set_value(adult_rg)
 
+    def set_adult_ethnicity(self, adult_ethnicity: str) -> None:
+        """
+        Define the value of the adult ethnicity field.
+
+        :param adult_ethnicity: A string representing the new value for the adult ethnicity.
+
+        :return: None
+        """
+        self.adult_ethnicity_field.set_value(adult_ethnicity)
+
+    def set_adult_religion(self, adult_religion: str) -> None:
+        """
+        Define the value of the adult religion field.
+
+        :param adult_religion: A string representing the new value for the adult religion.
+
+        :return: None
+        """
+        self.adult_religion_field.set_value(adult_religion)
+
+    def set_adult_marital_status(self, adult_marital_status: str) -> None:
+        """
+        Define the value of the adult marital status field.
+
+        :param adult_marital_status: A string representing the new value for the adult marital status.
+
+        :return: None
+        """
+        self.adult_marital_status_field.set_value(adult_marital_status)
+
+    def set_adult_household_income(self, adult_household_income: str) -> None:
+        """
+        Define the value of the adult household income field.
+
+        :param adult_household_income: A string representing the new value for the adult household income.
+
+        :return: None
+        """
+        self.adult_household_income_field.set_value(adult_household_income)
+
+    def set_adult_housing(self, adult_housing: Tuple[str, str]) -> None:
+        """
+        Define the value of the adult housing field.
+
+        :param adult_housing: A tuple containing two strings representing the new housing value in the order:
+        (type housing, paid monthly).
+
+        :return: None
+        """
+        self.adult_housing_field.set_value(adult_housing)
+
+    def set_adult_residents(self, adult_residents: str) -> None:
+        """
+        Define the value of the adult residents field.
+
+        :param adult_residents: A string representing the new value for the adult residents.
+
+        :return: None
+        """
+        self.adult_residents.set_value(adult_residents)
+
     def set_adult_address(self, adult_address: Tuple[str, str, str, str]) -> None:
         """
         Define the value of the adult address field.
@@ -253,6 +397,12 @@ class AdultsForm(BaseForm):
             'adult_birthdate': self.get_adult_birthdate(),
             'adult_cpf': self.get_adult_cpf(),
             'adult_rg': self.get_adult_rg(),
+            'adult_ethnicity': self.get_adult_ethnicity(),
+            'adult_religion': self.get_adult_religion(),
+            'adult_marital_status': self.get_adult_marital_status(),
+            'adult_household_income': self.get_adult_household_income(),
+            'adult_residents': self.get_adult_residents(),
+            'adult_housing': self.get_adult_housing(),
             'adult_address': self.get_adult_address(),
             'adult_contacts': self.get_adult_contacts(),
             'adult_activities': self.get_adult_activities(),
@@ -272,6 +422,12 @@ class AdultsForm(BaseForm):
         self.set_adult_birthdate(self.adult_entity.adult_birthdate)
         self.set_adult_cpf(self.adult_entity.adult_cpf)
         self.set_adult_rg(self.adult_entity.adult_rg)
+        self.set_adult_ethnicity(self.adult_entity.adult_ethnicity)
+        self.set_adult_religion(self.adult_entity.adult_religion)
+        self.set_adult_marital_status(self.adult_entity.adult_marital_status)
+        self.set_adult_household_income(self.adult_entity.adult_household_income)
+        self.set_adult_residents(self.adult_entity.adult_residents)
+        self.set_adult_housing(self.adult_entity.adult_housing)
         self.set_adult_address(self.adult_entity.adult_address)
         self.set_adult_activities(self.adult_entity.adult_activities)
         self.set_adult_contacts(self.adult_entity.adult_contacts)

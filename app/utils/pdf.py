@@ -174,7 +174,27 @@ def generate_parent_data(child_entity: ChildEntity) -> List[List]:
         ['Moradia', format_housing(child_entity.parent_housing)],
         ['Endereço', format_address(child_entity.parent_address)],
         ['Contatos', '\n'.join(child_entity.parent_contacts)],
-        ['Autorizaçao p/ pratica de exercicios', child_entity.parent_authorization],
+        ['Autorização p/ prática de exercícios', child_entity.parent_authorization],
+    ]
+
+
+def generate_adult_data(adult_entity: AdultEntity) -> List[List]:
+    return [
+        ['Informações'],
+        ['Nome', adult_entity.adult_name],
+        ['Gênero', adult_entity.adult_gender],
+        ['Data de nascimento:', adult_entity.adult_birthdate],
+        ['CPF', adult_entity.adult_cpf],
+        ['RG', adult_entity.adult_rg],
+        ['Etinia (Raça)', adult_entity.adult_ethnicity],
+        ['Religião', adult_entity.adult_religion],
+        ['Estado civil', adult_entity.adult_marital_status],
+        ['Renda familiar', adult_entity.adult_household_income],
+        ['Número de residentes no domicílio', adult_entity.adult_residents],
+        ['Moradia', format_housing(adult_entity.adult_housing)],
+        ['Atividades pretendidas no Prossan', '\n'.join(adult_entity.adult_activities)],
+        ['Endereço', format_address(adult_entity.adult_address)],
+        ['Contatos', '\n'.join(adult_entity.adult_contacts)],
     ]
 
 
@@ -255,31 +275,26 @@ def generate_adult_entity_pdf(adult_entity: AdultEntity, file_path: str, title: 
 
     :return: None
     """
-    doc = generate_simple_document(file_path, title)
     elements = []
+    doc = generate_simple_document(file_path, title)
 
-    # Header table.
-    header_table_data = [[HEADER_IMAGE, HEADER_DESC_FLOWABLE]]
-    header_table = generate_table(header_table_data, (150, 350), HEADER_TABLE_STYLE)
-    elements.append(header_table)
+    elements.append(generate_header_table())
     elements.append(Spacer(1, 0.4 * inch))
 
-    # Create a data list for the adult's table.
-    adult_data = [
-        ['Informações'],
-        ['Nome', adult_entity.adult_name],
-        ['Gênero', adult_entity.adult_gender],
-        ['Data de nascimento:', adult_entity.adult_birthdate],
-        ['CPF', adult_entity.adult_cpf],
-        ['RG', adult_entity.adult_rg],
-        ['Atividades pretendidas no Prossan', '\n'.join(adult_entity.adult_activities)],
-        ['Endereço', '\n'.join(adult_entity.adult_address)],
-        ['Contatos', '\n'.join(adult_entity.adult_contacts)],
-    ]
+    elements.append(Paragraph('Ficha de matricula de adultos', style=TITLE_PARAGRAPH_STYLE))
+    elements.append(Spacer(1, 0.4 * inch))
 
-    # Create the parent's table and set styles.
-    adult_table = generate_table(adult_data, (250, 250), INFO_TABLE_STYLE)
-    elements.append(adult_table)
+    elements.append(generate_table(generate_adult_data(adult_entity), (250, 250), INFO_TABLE_STYLE))
+    elements.append(Spacer(1, 0.4 * inch))
+
+    generate_observation_section(elements)
+    elements.append(Spacer(1, 0.4 * inch))
+
+    generate_signature_section(elements, 'Assinatura', True)
+    elements.append(Spacer(1, 0.4 * inch))
+
+    generate_social_validation_section(elements)
+    elements.append(Spacer(1, 0.4 * inch))
 
     # Build the PDF document.
     doc.build(elements)

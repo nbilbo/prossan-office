@@ -14,3 +14,4 @@ SCHOOL_DEGREE_OPTIONS = ('Educação infantil', 'Ensino fundamental', 'Ensino m�
 SCHOOL_PERIOD_OPTIONS = ('Manhã', 'Tarde', 'Noite')
 HOUSEHOLD_OPTIONS = ('Sem renda', 'Um salário mínimo', 'Dois salários mínimos', 'Três ou mais salários mínimos')
 TYPE_HOUSING = ('Própia', 'Alugada', 'Financiada', 'Cedida')
+MARITAL_STATUS = ('Solteiro(a)', 'Casado(a)', 'Viuvo(a)')

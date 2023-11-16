@@ -38,7 +38,7 @@ class ChildrenForm(BaseForm):
         child_container.config(text='Detalhes da criança / adolecente')
         child_container.config(padding=10)
         child_container.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
-        ttk.Frame(self.container).pack(side=tk.TOP, fill=tk.X, pady=50)
+        ttk.Frame(self.container).pack(side=tk.TOP, fill=tk.X, pady=25)
 
         self.child_name_field = TextField(child_container)
         self.child_name_field.label.config(text='Nome')
@@ -114,7 +114,7 @@ class ChildrenForm(BaseForm):
         parent_container.config(text='Detalhes do Responsável')
         parent_container.config(padding=10)
         parent_container.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
-        ttk.Frame(self.container).pack(side=tk.TOP, fill=tk.X, pady=50)
+        ttk.Frame(self.container).pack(side=tk.TOP, fill=tk.X, pady=25)
 
         self.parent_name_field = TextField(parent_container)
         self.parent_name_field.label.config(text='Nome')

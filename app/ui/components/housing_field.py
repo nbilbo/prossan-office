@@ -34,7 +34,7 @@ class HousingField(ttk.Labelframe):
         ttk.Frame(container).pack(side=tk.TOP, fill=tk.X, pady=10)
 
         self.paid_monthly_field = SpinField(container)
-        self.paid_monthly_field.label.config(text='Valor mensal')
+        self.paid_monthly_field.label.config(text='Mensalidade')
         self.paid_monthly_field.spinbox.config(from_=0, to=9999, format='%.2f')
         self.paid_monthly_field.set_value('0000,00')
         self.paid_monthly_field.pack(side=tk.TOP, fill=tk.X)
