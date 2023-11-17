@@ -24,6 +24,9 @@ class Application(ttk.Window):
 
     def __init__(self) -> None:
         super().__init__()
+        # internal settings.
+        self.protocol("WM_DELETE_WINDOW", self.stop)
+        
         # images.
         self.logo_img = image_tk(constants.IMAGES_DIR / 'logo.jpg')
 
@@ -164,6 +167,10 @@ class Application(ttk.Window):
         date_time = datetime.now().strftime('%d/%B/%Y %H:%M:%S')
         self.footer.date_time_label.config(text=date_time)
         self.after(1000, self.update_date_time)
+    
+    def stop_date_time_update(self) -> None:
+        """Stop Application.update_date_time callback."""
+        self.after_cancel(self.update_date_time)
 
     def open_confirm_cancel_dialog(self, title: str, message: str, command: Callable) -> None:
         """
@@ -346,4 +353,6 @@ class Application(ttk.Window):
         self.mainloop()
 
     def stop(self) -> None:
+        """Stop the application."""
+        self.stop_date_time_update()
         self.destroy()

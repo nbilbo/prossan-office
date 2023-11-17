@@ -48,6 +48,17 @@ Execute o programa usando o seguinte comando:
 - [ ] Pesquisar Adultos.
 - [ ] Pesquisar Voluntáios.
 
+## Pyinstaller.
+Criando um executavel com pyinstaller.
+
+   ```bash
+   pip install pyinstaller
+   ```
+
+   ```bash
+   pyinstaller --add-data "assets;assets" --icon=./assets/images/logo.ico --noconsole main.py
+   ```
+
 ## Contribuições
 
 Contribuições são bem-vindas! Se você quiser contribuir para o projeto, sinta-se à vontade para abrir 
