@@ -40,3 +40,4 @@
 
 <a href="https://www.flaticon.com/free-icons/danger" title="danger icons">Danger icons created by Freepik - Flaticon</a>
 
+<a href="https://www.flaticon.com/free-icons/folder" title="folder icons">Folder icons created by Freepik - Flaticon</a>

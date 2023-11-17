@@ -206,7 +206,8 @@ class Handler:
         """
         initialfile = 'criancas.xlsx'
         initialdir = constants.HOME_DIR
-        form = self.application.open_document_form(initialfile, initialdir)
+        filetypes = (('Arquivo Excel', '*.xlsx'),)
+        form = self.application.open_document_form(initialfile, initialdir, filetypes)
         self.bind_export_children_form(form)
 
     def handle_export_adults(self) -> None:
@@ -219,7 +220,8 @@ class Handler:
         """
         initialfile = 'adultos.xlsx'
         initialdir = constants.HOME_DIR
-        form = self.application.open_document_form(initialfile, initialdir)
+        filetypes = (('Arquivo Excel', '*.xlsx'),)
+        form = self.application.open_document_form(initialfile, initialdir, filetypes)
         self.bind_export_adults_form(form)
 
     def handle_confirm_export_children(self, form: DocumentForm) -> None:
@@ -486,7 +488,8 @@ class Handler:
             if child_entity is not None:
                 initialfile = child_entity.child_first_name + '.pdf'
                 initialdir = constants.HOME_DIR
-                form = self.application.open_document_form(initialfile, initialdir)
+                filetypes = (('Arquivo PDF', '*.pdf'),)
+                form = self.application.open_document_form(initialfile, initialdir, filetypes)
                 self.bind_pdf_children_form(form)
 
     def handle_confirm_children_pdf(self, form: DocumentForm) -> None:
@@ -656,7 +659,8 @@ class Handler:
             if adult_entity is not None:
                 initialfile = adult_entity.adult_first_name + '.pdf'
                 initialdir = constants.HOME_DIR
-                form = self.application.open_document_form(initialfile, initialdir)
+                filetypes = (('Arquivo PDF', '*.pdf'),)
+                form = self.application.open_document_form(initialfile, initialdir, filetypes)
                 self.bind_pdf_adults_form(form)
 
     def handle_confirm_adults_pdf(self, form: DocumentForm) -> None:

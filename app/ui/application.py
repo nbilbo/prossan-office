@@ -270,7 +270,12 @@ class Application(ttk.Window):
         self.apply_style()
         return form
 
-    def open_document_form(self, initialfile: Optional[str] = None, initialdir: Optional[str] = None) -> DocumentForm:
+    def open_document_form(
+        self, 
+        initialfile: Optional[str] = None, 
+        initialdir: Optional[str] = None,
+        filetypes: Tuple[Tuple[str, str], ...] = None
+    ) -> DocumentForm:
         """
         Open a document form for generating documents.
 
@@ -279,7 +284,7 @@ class Application(ttk.Window):
 
         :return: An instance of the PdfForm for user interaction.
         """
-        form = DocumentForm(self, initialfile, initialdir)
+        form = DocumentForm(self, initialfile, initialdir, filetypes)
         form.place_window_center()
         form.grab_set()
         self.apply_style()
