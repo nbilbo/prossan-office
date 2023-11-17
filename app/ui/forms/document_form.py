@@ -81,7 +81,7 @@ class DocumentForm(BaseForm):
         """
         Open a file dialog to choose a file location.
 
-        This method allows the user to select the directory and filename for the PDF document.
+        This method allows the user to select the directory and filename for the document.
 
         :return: None
         """

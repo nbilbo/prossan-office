@@ -281,6 +281,7 @@ class Application(ttk.Window):
 
         :param initialfile: The initial file name to be displayed in the form.
         :param initialdir: The initial directory path to open in the file dialog.
+        :param filetypes: The filetypes.
 
         :return: An instance of the PdfForm for user interaction.
         """

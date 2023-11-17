@@ -10,6 +10,8 @@ class InfoDialog(ttk.Toplevel):
     def __init__(self, master: tk.Misc, title: str, message: str) -> None:
         super().__init__(master=master)
         self.title(title)
+        self.attributes('-topmost', 'true')
+
         self.confirm_img = image_tk(constants.ICONS_DIR / 'confirm.png', (32, 32))
         self.info_img = image_tk(constants.ICONS_DIR / 'info.png', (32, 32))
 
