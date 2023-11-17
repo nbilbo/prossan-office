@@ -49,15 +49,16 @@ Execute o programa usando o seguinte comando:
 - [ ] Pesquisar Voluntáios.
 
 ## Pyinstaller.
-Criando um executavel com pyinstaller.
 
-   ```bash
-   pip install pyinstaller
-   ```
+windows
+```bash
+pyinstaller --add-data "assets;assets" --icon="assets/images/logo.ico" --hidden-import='PIL._tkinter_finder' --noconsole main.py
+```
 
-   ```bash
-   pyinstaller --add-data "assets;assets" --icon=./assets/images/logo.ico --noconsole main.py
-   ```
+linux
+```bash
+pyinstaller --add-data "assets:assets" --icon="assets/images/logo.ico" --hidden-import='PIL._tkinter_finder' --noconsole main.py
+```
 
 ## Contribuições
 
