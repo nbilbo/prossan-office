@@ -110,6 +110,7 @@ class AdultRepository:
         result = defaultdict(list)
 
         for register in registers:
+            result['geral'].append(register)
             for activity in register.adult_activities:
                 result[activity].append(register)
 

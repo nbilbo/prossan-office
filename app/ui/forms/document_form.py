@@ -16,11 +16,11 @@ class DocumentForm(BaseForm):
     """
 
     def __init__(
-        self, 
-        master: tk.Misc, 
-        initialfile: Optional[str] = None, 
+        self,
+        master: tk.Misc,
+        initialfile: Optional[str] = None,
         initialdir: Optional[str] = None,
-        filetypes: Optional[Tuple[Tuple[str, str], ...]] = None
+        filetypes: Optional[Tuple[Tuple[str, str], ...]] = None,
     ) -> None:
         """
         Initialize a new DocumentForm.
@@ -40,7 +40,7 @@ class DocumentForm(BaseForm):
         self.initialfile = initialfile
         self.initialdir = initialdir
         self.filetypes = filetypes
-        
+
         self.start_img = image_tk(constants.ICONS_DIR / 'start.png', (32, 32))
         self.folder_img = image_tk(constants.ICONS_DIR / 'folder.png', (32, 32))
 

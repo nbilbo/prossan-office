@@ -111,6 +111,7 @@ class ChildRepository:
         result = defaultdict(list)
 
         for register in registers:
+            result['geral'].append(register)
             for activity in register.child_activities:
                 result[activity].append(register)
 

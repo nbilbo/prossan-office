@@ -271,10 +271,10 @@ class Application(ttk.Window):
         return form
 
     def open_document_form(
-        self, 
-        initialfile: Optional[str] = None, 
+        self,
+        initialfile: Optional[str] = None,
         initialdir: Optional[str] = None,
-        filetypes: Tuple[Tuple[str, str], ...] = None
+        filetypes: Tuple[Tuple[str, str], ...] = None,
     ) -> DocumentForm:
         """
         Open a document form for generating documents.

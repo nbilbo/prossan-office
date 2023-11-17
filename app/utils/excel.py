@@ -46,13 +46,6 @@ def export_children_to_excel(values: Dict[str, List[ChildEntity]], file_path: st
                 'Nascimento': [str_to_date(register.child_birthdate) for register in registers],
                 'CPF': [register.child_cpf for register in registers],
                 'RG': [register.child_rg for register in registers],
-                'Etinia': [register.child_ethnicity for register in registers],
-                'Religião': [register.child_religion for register in registers],
-                'Escola': [register.child_school_name for register in registers],
-                'Escolaridade': [register.child_school_degree for register in registers],
-                'Periodo escolar': [register.child_school_period for register in registers],
-                'Número roupa': [register.child_clothing_number for register in registers],
-                'Número calçado': [register.child_shoe_number for register in registers],
             }
             data_frame = pd.DataFrame(data)
             data_frame.to_excel(writer, sheet_name=activity, index=False)
@@ -72,9 +65,9 @@ def export_adults_to_excel(values: Dict[str, List[AdultEntity]], file_path: str)
             data = {
                 'Nome': [register.adult_name for register in registers],
                 'Gênero': [register.adult_gender for register in registers],
+                'Nascimento': [str_to_date(register.adult_birthdate) for register in registers],
                 'CPF': [register.adult_cpf for register in registers],
                 'RG': [register.adult_rg for register in registers],
-                'Nascimento': [str_to_date(register.adult_birthdate) for register in registers],
             }
             data_frame = pd.DataFrame(data)
             data_frame.to_excel(writer, sheet_name=activity, index=False)
