@@ -12,4 +12,4 @@ class ChildrenPage(ManagerPage):
 
     def __init__(self, master: tk.Misc) -> None:
         super().__init__(master)
-        self.title_label.config(text='Crianças')
+        self.title_label.config(text='Crianças e adocelentes')
