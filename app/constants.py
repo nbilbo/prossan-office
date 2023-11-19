@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 HOME_DIR = Path.home()
-BASE_DIR = Path(sys._MEIPASS) if hasattr(sys, 'frozen') else Path().parent # Pyinstaller.
+BASE_DIR = Path(sys._MEIPASS) if hasattr(sys, 'frozen') else Path().parent   # Pyinstaller.
 ASSETS_DIR = BASE_DIR / 'assets'
 ICONS_DIR = ASSETS_DIR / 'icons'
 IMAGES_DIR = ASSETS_DIR / 'images'

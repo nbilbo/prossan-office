@@ -1,5 +1,8 @@
+import re
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Set
+
+from tinydb import Query
 
 from app.database.connections import LocalConnection
 from app.database.entities import AdultEntity
@@ -129,3 +132,32 @@ class AdultRepository:
             activities.update(register.adult_activities)
 
         return activities
+
+    @staticmethod
+    def search_many(searched: str) -> List[AdultEntity]:
+        """
+        Search for multiple adult records based on a search query.
+
+        :param searched:The search query used to find matching adult records.
+
+        :return:  list of AdultEntity objects matching the search query.
+        """
+        registers = []
+        query = Query()
+
+        with LocalConnection() as connection:
+            database = connection.database
+            table = database.table('adults')
+
+            documents = table.search(
+                (query.adult_name.matches(searched, flags=re.IGNORECASE))
+                | (query.adult_cpf.matches(searched, flags=re.IGNORECASE))
+                | (query.adult_rg.matches(searched, flags=re.IGNORECASE))
+            )
+
+            for document in documents:
+                adult = AdultEntity(**document)
+                adult.adult_id = document.doc_id
+                registers.append(adult)
+
+        return registers[::-1]

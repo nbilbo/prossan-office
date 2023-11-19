@@ -44,8 +44,8 @@ Execute o programa usando o seguinte comando:
 - [x] Exportar Crianças.
 - [x] Exportar Adultos.
 - [ ] Exportar Voluntáios.
-- [ ] Pesquisar Crianças.
-- [ ] Pesquisar Adultos.
+- [x] Pesquisar Crianças.
+- [x] Pesquisar Adultos.
 - [ ] Pesquisar Voluntáios.
 
 ## Pyinstaller.

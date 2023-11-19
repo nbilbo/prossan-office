@@ -25,8 +25,8 @@ class Application(ttk.Window):
     def __init__(self) -> None:
         super().__init__()
         # internal settings.
-        self.protocol("WM_DELETE_WINDOW", self.stop)
-        
+        self.protocol('WM_DELETE_WINDOW', self.stop)
+
         # images.
         self.logo_img = image_tk(constants.IMAGES_DIR / 'logo.jpg')
 
@@ -167,7 +167,7 @@ class Application(ttk.Window):
         date_time = datetime.now().strftime('%d/%B/%Y %H:%M:%S')
         self.footer.date_time_label.config(text=date_time)
         self.after(1000, self.update_date_time)
-    
+
     def stop_date_time_update(self) -> None:
         """Stop Application.update_date_time callback."""
         self.after_cancel(self.update_date_time)
@@ -298,6 +298,22 @@ class Application(ttk.Window):
         self.apply_style()
         return form
 
+    def focus_search_children_entry(self) -> None:
+        """
+        Focus search children entry.
+
+        :return: None.
+        """
+        self.children_page.search_entry.focus()
+
+    def focus_search_adults_entry(self) -> None:
+        """
+        Focus search adults entry.
+
+        :return: None.
+        """
+        self.adults_page.search_entry.focus()
+
     def get_children_table_selection(self) -> Optional[Tuple[str, ...]]:
         """
         Get the currently selected child record from the children table.
@@ -313,6 +329,22 @@ class Application(ttk.Window):
         :return: A tuple representing the selected adult's data, or None if nothing is selected.
         """
         return self.adults_page.table.get_selection()
+
+    def get_searched_children(self) -> str:
+        """
+        Get the currently searched children.
+
+        :return: A string representing the currently searched children.
+        """
+        return self.children_page.search_entry.get().strip()
+
+    def get_searched_adults(self) -> str:
+        """
+        Get the currently searched adults.
+
+        :return: A string representing the currently searched adults.
+        """
+        return self.adults_page.search_entry.get().strip()
 
     def set_children(self, children: List[ChildEntity]) -> None:
         """

@@ -1,5 +1,8 @@
+import re
 from collections import defaultdict
 from typing import Any, Dict, List, Optional, Set
+
+from tinydb import Query
 
 from app.database.connections import LocalConnection
 from app.database.entities import ChildEntity
@@ -130,3 +133,32 @@ class ChildRepository:
             activities.update(register.child_activities)
 
         return activities
+
+    @staticmethod
+    def search_many(searched: str) -> List[ChildEntity]:
+        """
+        Search for multiple child records based on a search query.
+
+        :param searched:The search query used to find matching child records.
+
+        :return:  list of ChildEntity objects matching the search query.
+        """
+        registers = []
+        query = Query()
+
+        with LocalConnection() as connection:
+            database = connection.database
+            table = database.table('children')
+
+            documents = table.search(
+                (query.child_name.matches(searched, flags=re.IGNORECASE))
+                | (query.child_cpf.matches(searched, flags=re.IGNORECASE))
+                | (query.child_rg.matches(searched, flags=re.IGNORECASE))
+            )
+
+            for document in documents:
+                child = ChildEntity(**document)
+                child.child_id = document.doc_id
+                registers.append(child)
+
+        return registers[::-1]

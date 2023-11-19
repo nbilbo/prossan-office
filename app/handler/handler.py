@@ -77,11 +77,15 @@ class Handler:
         details_button = self.application.children_page.details_button
         delete_button = self.application.children_page.delete_button
         pdf_button = self.application.children_page.pdf_button
+        search_button = self.application.children_page.search_button
+        search_entry = self.application.children_page.search_entry
 
         create_button.config(command=self.handle_open_create_children_form)
         details_button.config(command=self.handle_open_details_children_form)
         delete_button.config(command=self.handle_open_delete_children_dialog)
         pdf_button.config(command=self.handle_children_pdf)
+        search_button.config(command=self.handle_search_children)
+        search_entry.bind('<Return>', lambda _event: self.handle_search_children())
 
     def bind_adults_page(self) -> None:
         """
@@ -93,11 +97,15 @@ class Handler:
         details_button = self.application.adults_page.details_button
         delete_button = self.application.adults_page.delete_button
         pdf_button = self.application.adults_page.pdf_button
+        search_button = self.application.adults_page.search_button
+        search_entry = self.application.adults_page.search_entry
 
         create_button.config(command=self.handle_open_create_adults_form)
         details_button.config(command=self.handle_open_details_adults_form)
         delete_button.config(command=self.handle_open_delete_adults_dialog)
         pdf_button.config(command=self.handle_adults_pdf)
+        search_button.config(command=self.handle_search_adults)
+        search_entry.bind('<Return>', lambda _event: self.handle_search_adults())
 
     def bind_create_children_form(self, form: ChildrenForm) -> None:
         """
@@ -523,6 +531,14 @@ class Handler:
             self.application.open_info_dialog(title, message)
             form.destroy()
 
+    def handle_search_children(self) -> None:
+        """
+        Get current searched children and update children table.
+
+        :return: None.
+        """
+        self.refresh_children_page()
+
     def handle_open_create_adults_form(self) -> None:
         """
         Open the create adults form and configure its widget events.
@@ -694,20 +710,46 @@ class Handler:
             self.application.open_info_dialog(title, message)
             form.destroy()
 
+    def handle_search_adults(self) -> None:
+        """
+        Get current searched adults and update adults table.
+
+        :return: None.
+        """
+        self.refresh_adults_page()
+
     def refresh_children_page(self) -> None:
         """
-        Refresh application children table.
+        Get current searched children and update children table.
 
         :return: None
         """
-        registers = ChildRepository.select_many()
-        self.application.set_children(registers)
+        try:
+            searched = self.application.get_searched_children()
+            children = ChildRepository.search_many(searched)
+
+        except Exception as error:
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
+
+        else:
+            self.application.focus_search_children_entry()
+            self.application.set_children(children)
 
     def refresh_adults_page(self) -> None:
         """
-        Refresh application adults table.
+        Get current searched adults and update adults table.
 
         :return: None
         """
-        registers = AdultRepository.select_many()
-        self.application.set_adults(registers)
+        try:
+            searched = self.application.get_searched_adults()
+            adults = AdultRepository.search_many(searched)
+
+        except Exception as error:
+            self.application.open_danger_dialog('Atenção', str(error))
+            print(traceback.format_exc())
+
+        else:
+            self.application.focus_search_adults_entry()
+            self.application.set_adults(adults)
