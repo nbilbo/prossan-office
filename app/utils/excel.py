@@ -1,32 +1,9 @@
-from datetime import datetime
-from typing import Dict, List, Union
+from typing import Dict, List
 
 import pandas as pd
 
 from app.database.entities import AdultEntity, ChildEntity
-
-
-def str_to_date(value: str) -> Union[datetime, str]:
-    """
-    Convert a string to a datetime object or return the original string.
-
-    :param value: A string representing a date.
-    :return: A datetime object if the string can be converted, or the original string.
-    """
-    date_formats = ['%m/%d/%Y', '%d/%m/%Y']
-    formatted_value = value.replace('-', '/')
-
-    if not len(value):
-        return value
-
-    for date_format in date_formats:
-        try:
-            return datetime.strptime(formatted_value, date_format)
-
-        except ValueError:
-            pass
-
-    return formatted_value
+from app.utils.formats import format_str_to_age, format_str_to_date
 
 
 def export_children_to_excel(values: Dict[str, List[ChildEntity]], file_path: str) -> None:
@@ -43,7 +20,8 @@ def export_children_to_excel(values: Dict[str, List[ChildEntity]], file_path: st
             data = {
                 'Nome': [register.child_name for register in registers],
                 'Gênero': [register.child_gender for register in registers],
-                'Nascimento': [str_to_date(register.child_birthdate) for register in registers],
+                'Nascimento': [format_str_to_date(register.child_birthdate) for register in registers],
+                'Idade': [format_str_to_age(register.child_birthdate) for register in registers],
                 'CPF': [register.child_cpf for register in registers],
                 'RG': [register.child_rg for register in registers],
             }
@@ -65,7 +43,8 @@ def export_adults_to_excel(values: Dict[str, List[AdultEntity]], file_path: str)
             data = {
                 'Nome': [register.adult_name for register in registers],
                 'Gênero': [register.adult_gender for register in registers],
-                'Nascimento': [str_to_date(register.adult_birthdate) for register in registers],
+                'Nascimento': [format_str_to_date(register.adult_birthdate) for register in registers],
+                'Idade': [format_str_to_age(register.adult_birthdate) for register in registers],
                 'CPF': [register.adult_cpf for register in registers],
                 'RG': [register.adult_rg for register in registers],
             }

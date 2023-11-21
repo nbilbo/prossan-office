@@ -11,6 +11,7 @@ from reportlab.platypus import Image, ListFlowable, Paragraph, SimpleDocTemplate
 
 from app import constants
 from app.database.entities import AdultEntity, ChildEntity
+from app.utils.formats import format_address, format_housing, format_str_to_age
 
 HEADER_IMAGE = Image(constants.IMAGES_DIR / 'logo.jpg', width=150, height=130)
 
@@ -64,32 +65,6 @@ INFO_TABLE_STYLE = TableStyle(
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
     ]
 )
-
-
-def format_housing(housing: Tuple[str, str]) -> str:
-    """
-    Formats a housing tuple into a string.
-
-    :param housing: A tuple containing housing info.
-    :return: A formatted string containing housing info.
-    """
-    type_housing = f'Tipo: {housing[0]}'
-    paid_monthly = f'Mensalidade: R$ {housing[1] if len(housing[1]) else "000.00"}'
-    return '\n'.join((type_housing, paid_monthly))
-
-
-def format_address(address: Tuple[str, str, str, str]) -> str:
-    """
-    Formats an address tuple into a string.
-
-    :param address: A tuple containing address info.
-    :return: A formatted string containing address info.
-    """
-    street = f'Rua: {address[0]}'
-    district = f'Bairro: {address[1]}'
-    city = f'Cidade: {address[2]}'
-    state = f'Estado: {address[3]}'
-    return '\n'.join((street, district, city, state))
 
 
 def generate_header_table() -> Table:
@@ -149,6 +124,7 @@ def generate_child_data(child_entity: ChildEntity) -> List[List]:
         ['Nome', child_entity.child_name],
         ['Gênero', child_entity.child_gender],
         ['Data de nascimento', child_entity.child_birthdate],
+        ['Idade', format_str_to_age(child_entity.child_birthdate)],
         ['CPF', child_entity.child_cpf],
         ['RG', child_entity.child_rg],
         ['Etinia (Raça)', child_entity.child_ethnicity],
@@ -168,6 +144,7 @@ def generate_parent_data(child_entity: ChildEntity) -> List[List]:
         ['Nome', child_entity.parent_name],
         ['Gênero', child_entity.parent_gender],
         ['Data de nascimento:', child_entity.parent_birthdate],
+        ['Idade', format_str_to_age(child_entity.parent_birthdate)],
         ['CPF', child_entity.parent_cpf],
         ['RG', child_entity.parent_rg],
         ['Renda familiar', child_entity.parent_household_income],
@@ -184,6 +161,7 @@ def generate_adult_data(adult_entity: AdultEntity) -> List[List]:
         ['Nome', adult_entity.adult_name],
         ['Gênero', adult_entity.adult_gender],
         ['Data de nascimento:', adult_entity.adult_birthdate],
+        ['Idade', format_str_to_age(adult_entity.adult_birthdate)],
         ['CPF', adult_entity.adult_cpf],
         ['RG', adult_entity.adult_rg],
         ['Etinia (Raça)', adult_entity.adult_ethnicity],

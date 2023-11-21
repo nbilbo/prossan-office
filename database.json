@@ -127,7 +127,7 @@
     "3": {
       "child_name": "Amanda",
       "child_gender": "Feminino",
-      "child_birthdate": "",
+      "child_birthdate": "15/07/2015",
       "child_cpf": "AAA",
       "child_rg": "-AAA-",
       "child_ethnicity": "Negra",
@@ -142,7 +142,7 @@
       ],
       "parent_name": "",
       "parent_gender": "Masculino",
-      "parent_birthdate": "",
+      "parent_birthdate": "21/07/1976",
       "parent_cpf": "",
       "parent_rg": "",
       "parent_household_income": "Sem renda",
