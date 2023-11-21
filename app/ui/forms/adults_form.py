@@ -223,7 +223,7 @@ class AdultsForm(BaseForm):
 
         :return: A list containing strings representing the current values in the adult activities field.
         """
-        return self.adult_activities_field.get_value()
+        return [value.lower() for value in self.adult_activities_field.get_value()]
 
     def get_adult_address(self) -> Tuple[str, str, str, str]:
         """

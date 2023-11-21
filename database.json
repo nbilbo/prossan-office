@@ -25,7 +25,8 @@
         "4002-8922"
       ],
       "adult_activities": [
-        "fisioterapia"
+        "fisioterapia",
+        "karat\u00ea"
       ]
     },
     "2": {
@@ -51,7 +52,8 @@
       ],
       "adult_contacts": [],
       "adult_activities": [
-        "pintura"
+        "pintura",
+        "xadrez"
       ]
     }
   },
@@ -138,7 +140,8 @@
       "child_school_degree": "Educa\u00e7\u00e3o infantil",
       "child_school_period": "Manh\u00e3",
       "child_activities": [
-        "inform\u00e1tica"
+        "inform\u00e1tica",
+        "karat\u00ea"
       ],
       "parent_name": "",
       "parent_gender": "Masculino",

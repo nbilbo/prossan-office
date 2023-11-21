@@ -288,7 +288,7 @@ class ChildrenForm(BaseForm):
 
         :return: A list containing strings representing the current values in the child activities field.
         """
-        return self.child_activities_field.get_value()
+        return [value.lower() for value in self.child_activities_field.get_value()]
 
     def get_parent_name(self) -> str:
         """
