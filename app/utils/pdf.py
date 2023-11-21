@@ -170,9 +170,9 @@ def generate_adult_data(adult_entity: AdultEntity) -> List[List]:
         ['Renda familiar', adult_entity.adult_household_income],
         ['Número de residentes no domicílio', adult_entity.adult_residents],
         ['Moradia', format_housing(adult_entity.adult_housing)],
-        ['Atividades pretendidas no Prossan', '\n'.join(adult_entity.adult_activities)],
         ['Endereço', format_address(adult_entity.adult_address)],
         ['Contatos', '\n'.join(adult_entity.adult_contacts)],
+        ['Atividades pretendidas no Prossan', '\n'.join(adult_entity.adult_activities)]
     ]
 
 
