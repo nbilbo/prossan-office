@@ -13,7 +13,7 @@ from app import constants
 from app.database.entities import AdultEntity, ChildEntity
 from app.utils.formats import format_address, format_housing, format_str_to_age
 
-HEADER_IMAGE = Image(constants.IMAGES_DIR / 'logo.jpg', width=150, height=130)
+HEADER_IMAGE = Image(constants.IMAGES_DIR / 'logo.jpg', width=150, height=70)
 
 HEADER_DESC = [
     'PROJETO SOCIAL SANTO ANTÔNIO (PROSSAN)CNPJ 05.369.990/0001-53',
@@ -26,15 +26,13 @@ HEADER_DESC = [
     'PRAÇA VER. JOSÉ CUSTÓDIO FERREIRA N. 01 BAIRRO SANTO ANTÔNIO POUSO ALEGRE MG',
 ]
 
-HEADER_PARAGRAPH_STYLE = ParagraphStyle(name='HeaderParagraph', fontSize=7, spaceAfter=6)
+HEADER_PARAGRAPH_STYLE = ParagraphStyle(name='HeaderParagraph', fontSize=6, spaceAfter=0)
 
-TITLE_PARAGRAPH_STYLE = ParagraphStyle(name='TitleParagraph', alignment=1, fontSize=20)
+TITLE_PARAGRAPH_STYLE = ParagraphStyle(name='TitleParagraph', alignment=1, fontSize=12, fontName='Helvetica-Bold')
 
-BIG_PARAGRAPH_STYLE = ParagraphStyle(name='BigParagraph', alignment=1, fontSize=16, spaceAfter=6)
+BIG_PARAGRAPH_STYLE = ParagraphStyle(name='BigParagraph', alignment=1, fontSize=12, spaceAfter=6)
 
-NORMAL_PARAGRAPH_STYLE = ParagraphStyle(name='NormalParagraph', alignment=1, fontSize=14, spaceAfter=6)
-
-SMALL_PARAGRAPH_STYLE = ParagraphStyle(name='SmallParagraph', alignment=1, fontSize=12, spaceAfter=6)
+NORMAL_PARAGRAPH_STYLE = ParagraphStyle(name='NormalParagraph', alignment=1, fontSize=10, spaceAfter=6)
 
 HEADER_DESC_FLOWABLE = ListFlowable(
     [Paragraph(desc, HEADER_PARAGRAPH_STYLE) for desc in HEADER_DESC],
@@ -51,18 +49,20 @@ HEADER_TABLE_STYLE = TableStyle(
 
 INFO_TABLE_STYLE = TableStyle(
     [
-        # header.
-        ('BACKGROUND', (0, 0), (-1, 0), colors.white),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
-        # content.
-        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
         # general.
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, -1), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+        # header.
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 2),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.white),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
     ]
 )
 
@@ -111,8 +111,8 @@ def generate_simple_document(file_path: str, title: str) -> SimpleDocTemplate:
         file_path,
         pagesize=A4,
         title=title,
-        topMargin=0.5 * inch,
-        bottomMargin=0.5 * inch,
+        topMargin=0.2 * inch,
+        bottomMargin=0.2 * inch,
         leftMargin=0.5 * inch,
         rightMargin=0.5 * inch,
     )
@@ -133,7 +133,7 @@ def generate_child_data(child_entity: ChildEntity) -> List[List]:
         ['Número do calçado', child_entity.child_shoe_number],
         ['Nome da escola', child_entity.child_school_name],
         ['Escolaridade', child_entity.child_school_degree],
-        ['Periodo esoolar', child_entity.child_school_period],
+        ['Periodo escolar', child_entity.child_school_period],
         ['Atividades pretendidas no Prossan', '\n'.join(child_entity.child_activities)],
     ]
 
@@ -172,17 +172,16 @@ def generate_adult_data(adult_entity: AdultEntity) -> List[List]:
         ['Moradia', format_housing(adult_entity.adult_housing)],
         ['Endereço', format_address(adult_entity.adult_address)],
         ['Contatos', '\n'.join(adult_entity.adult_contacts)],
-        ['Atividades pretendidas no Prossan', '\n'.join(adult_entity.adult_activities)]
+        ['Atividades pretendidas no Prossan', '\n'.join(adult_entity.adult_activities)],
     ]
 
 
 def generate_signature_section(elements: List, text: str, show_date: bool = False) -> None:
-    elements.append(Paragraph('_ _' * 20, style=NORMAL_PARAGRAPH_STYLE))
+    elements.append(Paragraph('_ _' * 30, style=NORMAL_PARAGRAPH_STYLE))
     elements.append(Paragraph(text, style=NORMAL_PARAGRAPH_STYLE))
 
     if show_date:
         elements.append(Paragraph(datetime.now().strftime('%d/%B/%Y'), style=NORMAL_PARAGRAPH_STYLE))
-        elements.append(Spacer(1, 0.4 * inch))
 
 
 def generate_observation_section(elements: List) -> None:
@@ -219,25 +218,18 @@ def generate_child_entity_pdf(child_entity: ChildEntity, file_path: str, title: 
     doc = generate_simple_document(file_path, title)
 
     elements.append(generate_header_table())
-    elements.append(Spacer(1, 0.4 * inch))
+    elements.append(Spacer(1, 0.1 * inch))
 
-    elements.append(Paragraph('Ficha de matricula de crianças e adolecentes', style=TITLE_PARAGRAPH_STYLE))
-    elements.append(Spacer(1, 0.4 * inch))
+    elements.append(Paragraph('Ficha de matricula para crianças e adolecentes', style=TITLE_PARAGRAPH_STYLE))
+    elements.append(Spacer(1, 0.1 * inch))
 
     elements.append(generate_table(generate_child_data(child_entity), (250, 250), INFO_TABLE_STYLE))
-    elements.append(Spacer(1, 0.4 * inch))
+    elements.append(Spacer(1, 0.2 * inch))
 
     elements.append(generate_table(generate_parent_data(child_entity), (250, 250), INFO_TABLE_STYLE))
     elements.append(Spacer(1, 0.4 * inch))
 
-    generate_observation_section(elements)
-    elements.append(Spacer(1, 0.4 * inch))
-
     generate_signature_section(elements, 'Assinatura do responsável', True)
-    elements.append(Spacer(1, 0.4 * inch))
-
-    generate_social_validation_section(elements)
-    elements.append(Spacer(1, 0.4 * inch))
 
     # Build the PDF document.
     doc.build(elements)
@@ -257,10 +249,10 @@ def generate_adult_entity_pdf(adult_entity: AdultEntity, file_path: str, title: 
     doc = generate_simple_document(file_path, title)
 
     elements.append(generate_header_table())
-    elements.append(Spacer(1, 0.4 * inch))
+    elements.append(Spacer(1, 0.1 * inch))
 
-    elements.append(Paragraph('Ficha de matricula de adultos', style=TITLE_PARAGRAPH_STYLE))
-    elements.append(Spacer(1, 0.4 * inch))
+    elements.append(Paragraph('Ficha de matricula para adultos', style=TITLE_PARAGRAPH_STYLE))
+    elements.append(Spacer(1, 0.1 * inch))
 
     elements.append(generate_table(generate_adult_data(adult_entity), (250, 250), INFO_TABLE_STYLE))
     elements.append(Spacer(1, 0.4 * inch))
@@ -272,7 +264,6 @@ def generate_adult_entity_pdf(adult_entity: AdultEntity, file_path: str, title: 
     elements.append(Spacer(1, 0.4 * inch))
 
     generate_social_validation_section(elements)
-    elements.append(Spacer(1, 0.4 * inch))
 
     # Build the PDF document.
     doc.build(elements)
