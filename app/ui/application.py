@@ -32,7 +32,7 @@ class Application(ttk.Window):
 
         # style.
         self.font_family = None
-        self.font_size = 12
+        self.font_size = 14
         self.font_weight = tk.NORMAL
         self.font = (self.font_family, self.font_size, self.font_weight)
 
